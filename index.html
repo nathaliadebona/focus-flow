@@ -102,7 +102,7 @@
                 <tbody id="calendar-grid"></tbody>
             </table>
 
-            <dialog id="event-modal">
+            <dialog id="event-modal" open="">
                 <h3 id="event-modal-title">Add Event</h3>
 
                 <form action="">
@@ -118,9 +118,9 @@
                     <label for="event-attachment">Attachment</label>
                     <input type="file" id="event-attachment">
 
-                    <button type="submit">Save Event</button>
-                    <button type="button" id="delete-event-btn">Delete Event</button>
-                    <button type="button" id="cancel-event-btn">Cancel</button>
+                    <button type="submit"><span>Save Event</span></button>
+                    <button type="button" id="delete-event-btn"><span>Delete Event</span></button>
+                    <button type="button" id="cancel-event-btn"><span>Cancel</span></button>
                 </form>
             </dialog>
         </section>
