@@ -1,3 +1,64 @@
 :root {
-   
+   --color-primary: #2C4A52;
+    --color-primary-light: #3D6470;
+    --color-secondary: #F3ECE0;
+    --color-bg: #FAF7F2;
+    --color-accent: #E8724C;
+    --color-text: #2B2B2B;
+    --color-text-secondary: #6B6B6B;
+    --color-border: #E0DAD0;
+
+    --font-heading: 'Poppins', sans-serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+}
+
+h1, h2, h3 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+}
+
+header {
+    text-align: center;
+    padding: 1.2rem 2rem;
+    background-color: var(--color-secondary);
+}
+
+header h1 {
+    font-size: 2rem;
+    color: var(--color-primary);
+}
+
+header p {
+    font-size: 1rem;
+    margin-top: 0.2rem;
+    color: var(--color-text-secondary);
+}
+
+
+
+footer {
+    text-align: center;
+    padding: 1.5rem;
+    background-color: var(--color-secondary);
+}
+
+footer p {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+}
+
+footer i {
+    color: var(--color-accent);
 }
