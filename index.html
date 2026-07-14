@@ -27,7 +27,7 @@
         <section id="dashboard">
             <h2>Dashboard</h2>
 
-            <p>Welcome back!</p>
+            <p class="dashboard-greeting">Welcome back!</p>
 
             <div class="summary-cards">
                 <article class="summary-card">
@@ -55,7 +55,7 @@
         <section id="notes">
             <h2>Notes</h2>
 
-            <button id="new-note-btn" type="button">+New Note</button>
+            <button id="new-note-btn" type="button"><span>+ New Note</span></button>
 
             <ul id="notes-list"></ul>
 
@@ -69,8 +69,8 @@
                     <label for="note-content">Content</label>
                     <textarea name="note-content" id="note-content">Write your note here...</textarea>
 
-                    <button type="submit">Save Note</button>
-                    <button type="button">Cancel</button>
+                    <button type="submit"><span>Save Note</span></button>
+                    <button type="button"><span>Cancel</span></button>
                 </form>
             </dialog>
         </section>

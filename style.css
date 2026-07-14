@@ -4,6 +4,7 @@
     --color-secondary: #F3ECE0;
     --color-bg: #FAF7F2;
     --color-accent: #E8724C;
+    --color-accent-dark:#D1633C;
     --color-text: #2B2B2B;
     --color-text-secondary: #6B6B6B;
     --color-border: #E0DAD0;
@@ -22,6 +23,12 @@ body {
     font-family: var(--font-body);
     background-color: var(--color-bg);
     color: var(--color-text);
+}
+
+main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem;
 }
 
 h1, h2, h3 {
@@ -46,7 +53,187 @@ header p {
     color: var(--color-text-secondary);
 }
 
+#dashboard {
+    padding: 3.5rem 1.5rem;
+}
 
+#dashboard h2 {
+    font-size: 1.8rem;
+    color: var(--color-primary);
+}
+
+.dashboard-greeting {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.summary-cards {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.summary-card {
+    flex: 1;
+    min-width: 200px;
+    text-align: center;
+    padding: 12px;
+    border-radius: 15px;
+    background-color: var(--color-secondary);
+}
+
+.summary-card h3 {
+    font-size: 1.1rem;
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+}
+
+.summary-card p {
+    font-family: var(--font-body);
+    color: var(--color-text-secondary);
+}
+
+#notes {
+    padding: 3.5rem 1.5rem;
+}
+
+#notes h2 {
+    font-size: 1.8rem;
+    color: var(--color-primary);
+}
+
+#new-note-btn {
+    position: relative;
+    overflow: hidden;
+    padding: 6px 10px;
+    border: none;
+    border-radius: 6px;
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+#new-note-btn span {
+    position: relative;
+    z-index: 1;
+}
+
+#new-note-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-accent-dark);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s ease;
+}
+
+#new-note-btn:hover::before {
+    transform: scaleX(1);
+}
+
+#notes-empty-state {
+    margin-top: 1rem;
+    color: var(--color-text-secondary);
+}
+
+#note-modal {
+    width: 90%;
+    max-width: 400px;
+    padding: 2rem;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--color-bg);
+}
+
+#note-modal::backdrop {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+#note-modal form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#note-modal label {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--color-text);
+}
+
+#note-modal input,
+#note-modal textarea {
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+}
+
+#note-modal textarea {
+    resize: vertical;
+}
+
+#note-modal button[type="submit"] {
+    position: relative;
+    overflow: hidden;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+    cursor: pointer;
+}
+
+#note-modal button[type="submit"] span {
+    position: relative;
+    z-index: 1;
+}
+
+#note-modal button[type="submit"]::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-accent-dark);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s ease;
+}
+
+#note-modal button[type="submit"]:hover::before {
+    transform: scaleX(1);
+}
+
+#note-modal button[type="button"] {
+    position: relative;
+    overflow: hidden;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    background-color: transparent;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+}
+
+#note-modal button[type="button"] span {
+    position: relative;
+    z-index: 1;
+}
+
+#note-modal button[type="button"]::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-secondary);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s ease;
+}
+
+#note-modal button[type="button"]:hover::before {
+    transform: scaleX(1);
+}
 
 footer {
     text-align: center;
