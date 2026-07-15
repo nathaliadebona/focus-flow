@@ -326,6 +326,56 @@ td:hover {
 
 /* Event modal */
 
+#event-modal {
+    margin: auto;
+    width: 90%;
+    max-width: 400px;
+    padding: 2rem;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--color-bg);
+}
+
+#event-modal::backdrop {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+#event-modal-title {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: var(--color-primary);
+}
+
+#event-modal form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#event-modal label {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--color-text);
+}
+
+#event-modal input,
+#event-modal textarea {
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+}
+
+#event-modal textarea {
+    resize: vertical;
+}
+
+#event-modal input[type="file"] {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+}
+
 /* Save Event */
 #event-modal button[type="submit"] {
     position: relative;

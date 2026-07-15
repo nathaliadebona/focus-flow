@@ -1,11 +1,18 @@
 const noteModal = document.getElementById("note-modal");
-const showModal = document.getElementById("new-note-btn");
-const cancelModal = document.getElementById("cancel-note-btn");
+const openNoteModal = document.getElementById("new-note-btn");
+const cancelNoteModal = document.getElementById("cancel-note-btn");
 
-showModal.addEventListener('click', function() {
+openNoteModal.addEventListener('click', function() {
     noteModal.showModal();
 })
 
-cancelModal.addEventListener('click', function() {
+cancelNoteModal.addEventListener('click', function() {
     noteModal.close();
+})
+
+const eventModal = document.getElementById("event-modal");
+const cancelEventBtn = document.getElementById("cancel-event-btn");
+
+cancelEventBtn.addEventListener('click', function() {
+    eventModal.close();
 })
