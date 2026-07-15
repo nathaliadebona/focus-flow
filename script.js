@@ -89,10 +89,14 @@ renderNotes();
 // ===== CALENDAR =====
 const eventModal = document.getElementById("event-modal");
 const cancelEventBtn = document.getElementById("cancel-event-btn");
+const prevMonthBtn = document.getElementById("prev-month");
+const nextMonthBtn = document.getElementById("next-month");
+
 const today = new Date();
-const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 let currentYear = today.getFullYear();
 let currentMonth = today.getMonth();
+
+const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 function renderCalendarHeader() {
     const currentMonthEl = document.getElementById("current-month");
@@ -101,6 +105,28 @@ function renderCalendarHeader() {
 
 cancelEventBtn.addEventListener('click', function() {
     eventModal.close();
+});
+
+prevMonthBtn.addEventListener('click', function() {
+    currentMonth--;
+
+    if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+    }
+
+    renderCalendarHeader();
+});
+
+nextMonthBtn.addEventListener('click', function() {
+    currentMonth++;
+
+    if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+    }
+
+    renderCalendarHeader();
 });
 
 renderCalendarHeader();
