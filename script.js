@@ -89,7 +89,19 @@ renderNotes();
 // ===== CALENDAR =====
 const eventModal = document.getElementById("event-modal");
 const cancelEventBtn = document.getElementById("cancel-event-btn");
+const today = new Date();
+const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+let currentYear = today.getFullYear();
+let currentMonth = today.getMonth();
+
+function renderCalendarHeader() {
+    const currentMonthEl = document.getElementById("current-month");
+    currentMonthEl.textContent = monthNames[currentMonth] + " " + currentYear;
+}
 
 cancelEventBtn.addEventListener('click', function() {
     eventModal.close();
 });
+
+renderCalendarHeader();
+
