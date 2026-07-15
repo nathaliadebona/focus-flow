@@ -87,53 +87,29 @@ noteForm.addEventListener('submit', function(event) {
 renderNotes();
 
 // ===== CALENDAR =====
+
+// Element references
 const eventModal = document.getElementById("event-modal");
 const cancelEventBtn = document.getElementById("cancel-event-btn");
 const prevMonthBtn = document.getElementById("prev-month");
 const nextMonthBtn = document.getElementById("next-month");
 const eventForm = document.getElementById("event-form");
+const deleteEventBtn = document.getElementById("delete-event-btn");
 
+// Data/state variables
 const today = new Date();
 let currentYear = today.getFullYear();
 let currentMonth = today.getMonth();
-
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 let events = JSON.parse(localStorage.getItem('events')) || [];
 let selectedDay = null;
 let eventBeingEdited = null;
 
+// Functions
 function renderCalendarHeader() {
     const currentMonthEl = document.getElementById("current-month");
     currentMonthEl.textContent = monthNames[currentMonth] + " " + currentYear;
 }
-
-cancelEventBtn.addEventListener('click', function() {
-    eventModal.close();
-});
-
-prevMonthBtn.addEventListener('click', function() {
-    currentMonth--;
-
-    if (currentMonth < 0) {
-        currentMonth = 11;
-        currentYear--;
-    }
-
-    renderCalendarHeader();
-    renderCalendarDays();
-});
-
-nextMonthBtn.addEventListener('click', function() {
-    currentMonth++;
-
-    if (currentMonth > 11) {
-        currentMonth = 0;
-        currentYear++;
-    }
-
-    renderCalendarHeader();
-    renderCalendarDays();
-});
 
 function renderCalendarDays() {
     const calendarGrid = document.getElementById("calendar-grid");
@@ -164,11 +140,11 @@ function renderCalendarDays() {
         });
 
         if (events[eventIndex]) {
-                cell.classList.add('has-event');
-    
-                const eventTitle = document.createElement('div');
-                eventTitle.textContent = events[eventIndex].title;
-                cell.appendChild(eventTitle);
+            cell.classList.add('has-event');
+
+            const eventTitle = document.createElement('div');
+            eventTitle.textContent = events[eventIndex].title;
+            cell.appendChild(eventTitle);
         }
 
         cell.addEventListener('click', function() {
@@ -204,6 +180,35 @@ function renderCalendarDays() {
     }
 }
 
+function saveEvents() {
+    localStorage.setItem('events', JSON.stringify(events));
+}
+
+// Click events (addEventListener)
+cancelEventBtn.addEventListener('click', function() {
+    eventModal.close();
+});
+
+prevMonthBtn.addEventListener('click', function() {
+    currentMonth--;
+    if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+    }
+    renderCalendarHeader();
+    renderCalendarDays();
+});
+
+nextMonthBtn.addEventListener('click', function() {
+    currentMonth++;
+    if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+    }
+    renderCalendarHeader();
+    renderCalendarDays();
+});
+
 eventForm.addEventListener('submit', function(event) {
     event.preventDefault();
 
@@ -234,10 +239,18 @@ eventForm.addEventListener('submit', function(event) {
     eventModal.close();
 });
 
-function saveEvents() {
-    localStorage.setItem('events', JSON.stringify(events));
-}
+deleteEventBtn.addEventListener('click', function() {
+    if (eventBeingEdited !== null) {
+        events.splice(eventBeingEdited, 1);
+        eventBeingEdited = null;
 
+        saveEvents();
+        renderCalendarDays();
+        eventForm.reset();
+        eventModal.close();
+    }
+});
+
+// Initialization calls (run once when the page loads)
 renderCalendarHeader();
 renderCalendarDays();
-
