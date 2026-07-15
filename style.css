@@ -159,6 +159,7 @@ header p {
 
 /* Notes modal */
 #note-modal {
+    margin: auto;
     width: 90%;
     max-width: 400px;
     padding: 2rem;
