@@ -404,6 +404,33 @@ td:hover {
     transform: scaleX(1);
 }
 
+/* Import section */
+
+#import {
+    padding: 3.5rem 1.5rem;
+}
+
+#import h2 {
+    font-size: 1.8rem;
+    color: var(--color-primary);
+}
+
+#import p {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-secondary);
+}
+
+#import-file {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+}
+
+#import-status {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+}
+
 /*Footer*/
 footer {
     text-align: center;
