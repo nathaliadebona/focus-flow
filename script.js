@@ -116,6 +116,7 @@ prevMonthBtn.addEventListener('click', function() {
     }
 
     renderCalendarHeader();
+    renderCalendarDays();
 });
 
 nextMonthBtn.addEventListener('click', function() {
@@ -127,7 +128,41 @@ nextMonthBtn.addEventListener('click', function() {
     }
 
     renderCalendarHeader();
+    renderCalendarDays();
 });
 
+function renderCalendarDays() {
+    const calendarGrid = document.getElementById("calendar-grid");
+    calendarGrid.innerHTML = '';
+
+    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+    const firstDayOfWeek = new Date(currentYear, currentMonth, 1).getDay();
+
+    let row = document.createElement('tr');
+
+    for (let i = 0; i < firstDayOfWeek; i++) {
+        const emptyCell = document.createElement('td');
+        row.appendChild(emptyCell);
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+        const cell = document.createElement('td');
+        cell.textContent = day;
+        row.appendChild(cell);
+
+        const totalCellsSoFar = firstDayOfWeek + day;
+
+        if (totalCellsSoFar % 7 === 0) {
+            calendarGrid.appendChild(row);
+            row = document.createElement('tr');
+        }
+    }
+
+    if (row.children.length > 0) {
+        calendarGrid.appendChild(row);
+    }
+}
+
 renderCalendarHeader();
+renderCalendarDays();
 
