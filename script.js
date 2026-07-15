@@ -100,6 +100,7 @@ let currentMonth = today.getMonth();
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 let events = JSON.parse(localStorage.getItem('events')) || [];
 let selectedDay = null;
+let eventBeingEdited = null;
 
 function renderCalendarHeader() {
     const currentMonthEl = document.getElementById("current-month");
@@ -158,8 +159,33 @@ function renderCalendarDays() {
 
         cell.dataset.day = day;
 
+        const eventIndex = events.findIndex(function(event) {
+            return event.day === day && event.month === currentMonth && event.year === currentYear;
+        });
+
+        if (events[eventIndex]) {
+                cell.classList.add('has-event');
+    
+                const eventTitle = document.createElement('div');
+                eventTitle.textContent = events[eventIndex].title;
+                cell.appendChild(eventTitle);
+        }
+
         cell.addEventListener('click', function() {
             selectedDay = day;
+
+            if (eventIndex !== -1) {
+                eventBeingEdited = eventIndex;
+
+                document.getElementById("event-title").value = events[eventIndex].title;
+                document.getElementById("event-time").value = events[eventIndex].time;
+                document.getElementById("event-notes").value = events[eventIndex].notes;
+                document.getElementById("event-modal-title").textContent = "Edit Event";
+            } else {
+                eventBeingEdited = null;
+                document.getElementById("event-modal-title").textContent = "Add Event";
+            }
+
             eventModal.showModal();
         });
 
@@ -185,14 +211,21 @@ eventForm.addEventListener('submit', function(event) {
     const time = document.getElementById("event-time").value;
     const notes = document.getElementById("event-notes").value;
 
-    events.push({
-        day: selectedDay,
-        month: currentMonth,
-        year: currentYear,
-        title: title,
-        time: time,
-        notes: notes
-    });
+    if (eventBeingEdited !== null) {
+        events[eventBeingEdited].title = title;
+        events[eventBeingEdited].time = time;
+        events[eventBeingEdited].notes = notes;
+        eventBeingEdited = null;
+    } else {
+        events.push({
+            day: selectedDay,
+            month: currentMonth,
+            year: currentYear,
+            title: title,
+            time: time,
+            notes: notes
+        });
+    }
 
     saveEvents();
     renderCalendarDays();
