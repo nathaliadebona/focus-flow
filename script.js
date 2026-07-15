@@ -148,6 +148,11 @@ function renderCalendarDays() {
     for (let day = 1; day <= daysInMonth; day++) {
         const cell = document.createElement('td');
         cell.textContent = day;
+        
+        if (day === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
+            cell.classList.add('today');
+        }
+
         row.appendChild(cell);
 
         const totalCellsSoFar = firstDayOfWeek + day;
