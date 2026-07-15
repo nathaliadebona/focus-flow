@@ -91,12 +91,15 @@ const eventModal = document.getElementById("event-modal");
 const cancelEventBtn = document.getElementById("cancel-event-btn");
 const prevMonthBtn = document.getElementById("prev-month");
 const nextMonthBtn = document.getElementById("next-month");
+const eventForm = document.getElementById("event-form");
 
 const today = new Date();
 let currentYear = today.getFullYear();
 let currentMonth = today.getMonth();
 
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+let events = JSON.parse(localStorage.getItem('events')) || [];
+let selectedDay = null;
 
 function renderCalendarHeader() {
     const currentMonthEl = document.getElementById("current-month");
@@ -148,10 +151,17 @@ function renderCalendarDays() {
     for (let day = 1; day <= daysInMonth; day++) {
         const cell = document.createElement('td');
         cell.textContent = day;
-        
+
         if (day === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
             cell.classList.add('today');
         }
+
+        cell.dataset.day = day;
+
+        cell.addEventListener('click', function() {
+            selectedDay = day;
+            eventModal.showModal();
+        });
 
         row.appendChild(cell);
 
@@ -166,6 +176,33 @@ function renderCalendarDays() {
     if (row.children.length > 0) {
         calendarGrid.appendChild(row);
     }
+}
+
+eventForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const title = document.getElementById("event-title").value;
+    const time = document.getElementById("event-time").value;
+    const notes = document.getElementById("event-notes").value;
+
+    events.push({
+        day: selectedDay,
+        month: currentMonth,
+        year: currentYear,
+        title: title,
+        time: time,
+        notes: notes
+    });
+
+    saveEvents();
+    renderCalendarDays();
+
+    eventForm.reset();
+    eventModal.close();
+});
+
+function saveEvents() {
+    localStorage.setItem('events', JSON.stringify(events));
 }
 
 renderCalendarHeader();
