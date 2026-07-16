@@ -63,6 +63,8 @@ openNoteModal.addEventListener('click', function() {
 });
 
 cancelNoteModal.addEventListener('click', function() {
+    noteBeingEdited = null;
+    noteForm.reset();
     noteModal.close();
 });
 
@@ -191,6 +193,9 @@ function saveEvents() {
 
 // Click events (addEventListener)
 cancelEventBtn.addEventListener('click', function() {
+    eventBeingEdited = null;
+    eventForm.reset();
+    document.getElementById("event-modal-title").textContent = "Add Event";
     eventModal.close();
 });
 
