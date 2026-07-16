@@ -147,6 +147,7 @@ function renderCalendarDays() {
             cell.classList.add('has-event');
 
             const eventTitle = document.createElement('div');
+            eventTitle.classList.add('event-label');
             eventTitle.textContent = events[eventIndex].title;
             cell.appendChild(eventTitle);
         }

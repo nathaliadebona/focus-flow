@@ -8,6 +8,7 @@
     --color-text: #2B2B2B;
     --color-text-secondary: #6B6B6B;
     --color-border: #E0DAD0;
+    --color-event-bg: #D4DEE0;
 
     --font-heading: 'Poppins', sans-serif;
     --font-body: 'Inter', sans-serif;
@@ -349,6 +350,7 @@ header p {
 table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed;
 }
 
 th {
@@ -358,9 +360,21 @@ th {
 }
 
 td {
+    min-width: 90px;
+    height: 70px;
     padding: 14px;
     text-align: center;
     vertical-align: top;
+}
+
+.event-label {
+    max-width: 90px;
+    margin: 0.5rem auto 0;
+    font-size: 0.7rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
 }
 
 td.today {
@@ -370,14 +384,23 @@ td.today {
 }
 
 td.has-event {
-    background-color: var(--color-secondary);
+    background-color: var(--color-event-bg);
+    color: var(--color-primary);
+    border-radius: 8px;
     cursor: pointer;
 }
 
 td:hover {
     background-color: var(--color-secondary);
+    border-radius: 8px;
     cursor: pointer;
 }
+
+td.has-event:hover {
+    background-color: var(--color-primary-light);
+    color: var(--color-bg);
+}
+
 
 /* Event modal */
 
