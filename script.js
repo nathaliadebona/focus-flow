@@ -292,3 +292,54 @@ function updateDashboard() {
 }
 
 updateDashboard();
+
+// ===== IMPORT =====
+
+const importFileInput = document.getElementById("import-file");
+
+importFileInput.addEventListener('change', function() {
+    const file = importFileInput.files[0];
+
+    if (!file) {
+        return;
+    }
+
+    const statusEl = document.getElementById("import-status");
+
+    if (!file.name.endsWith('.csv') && !file.name.endsWith('.json')) {
+        statusEl.textContent = "Invalid file format. Please upload a .csv or .json file.";
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function(event) {
+        const fileContent = event.target.result;
+
+        if (file.name.endsWith('.json')) {
+        const data = JSON.parse(fileContent);
+
+        if (data.notes) {
+            data.notes.forEach(function(note) {
+                notes.push(note);
+            });
+        }
+
+        if (data.events) {
+            data.events.forEach(function(evt) {
+                events.push(evt);
+            });
+        }
+
+        saveNotes();
+        renderNotes();
+        saveEvents();
+        renderCalendarDays();
+        updateDashboard();
+
+        statusEl.textContent = "File imported successfully!";
+    }
+};
+
+    reader.readAsText(file);
+});
