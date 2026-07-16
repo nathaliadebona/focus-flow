@@ -34,6 +34,7 @@ function renderNotes() {
 
         const deleteBtn = document.createElement('button');
         deleteBtn.textContent = "Delete";
+        deleteBtn.classList.add('delete-btn');
         noteItem.appendChild(deleteBtn);
         deleteBtn.addEventListener('click', function() {
             notes.splice(index, 1);
@@ -44,6 +45,7 @@ function renderNotes() {
 
         const editBtn = document.createElement('button');
         editBtn.textContent = "Edit";
+        editBtn.classList.add('edit-btn');
         noteItem.appendChild(editBtn);
         editBtn.addEventListener('click', function() {
             document.getElementById("note-title").value = note.title;
