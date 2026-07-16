@@ -39,6 +39,7 @@ function renderNotes() {
             notes.splice(index, 1);
             saveNotes();
             renderNotes();
+            updateDashboard();
         });
 
         const editBtn = document.createElement('button');
@@ -79,6 +80,7 @@ noteForm.addEventListener('submit', function(event) {
 
     saveNotes();
     renderNotes();
+    updateDashboard();
 
     noteForm.reset();
     noteModal.close();
@@ -197,6 +199,7 @@ prevMonthBtn.addEventListener('click', function() {
     }
     renderCalendarHeader();
     renderCalendarDays();
+    updateDashboard();
 });
 
 nextMonthBtn.addEventListener('click', function() {
@@ -207,6 +210,7 @@ nextMonthBtn.addEventListener('click', function() {
     }
     renderCalendarHeader();
     renderCalendarDays();
+    updateDashboard();
 });
 
 eventForm.addEventListener('submit', function(event) {
@@ -234,6 +238,7 @@ eventForm.addEventListener('submit', function(event) {
 
     saveEvents();
     renderCalendarDays();
+    updateDashboard();
 
     eventForm.reset();
     eventModal.close();
@@ -246,6 +251,7 @@ deleteEventBtn.addEventListener('click', function() {
 
         saveEvents();
         renderCalendarDays();
+        updateDashboard();
         eventForm.reset();
         eventModal.close();
     }
@@ -254,6 +260,7 @@ deleteEventBtn.addEventListener('click', function() {
 // Initialization calls (run once when the page loads)
 renderCalendarHeader();
 renderCalendarDays();
+updateDashboard();
 
 // ===== DASHBOARD =====
 
@@ -314,9 +321,9 @@ importFileInput.addEventListener('change', function() {
     const reader = new FileReader();
 
     reader.onload = function(event) {
-        const fileContent = event.target.result;
+    const fileContent = event.target.result;
 
-        if (file.name.endsWith('.json')) {
+    if (file.name.endsWith('.json')) {
         const data = JSON.parse(fileContent);
 
         if (data.notes) {
@@ -330,15 +337,46 @@ importFileInput.addEventListener('change', function() {
                 events.push(evt);
             });
         }
-
-        saveNotes();
-        renderNotes();
-        saveEvents();
-        renderCalendarDays();
-        updateDashboard();
-
-        statusEl.textContent = "File imported successfully!";
     }
+
+    if (file.name.endsWith('.csv')) {
+        const lines = fileContent.split("\n");
+        const headers = lines[0].split(",");
+
+        for (let i = 1; i < lines.length; i++) {
+            if (lines[i].trim() === "") {
+                continue;
+            }
+
+            const values = lines[i].split(",");
+            const record = {};
+
+            headers.forEach(function(header, index) {
+                record[header.trim()] = values[index] ? values[index].trim() : "";
+            });
+
+            if (record.type === "note") {
+                notes.push({ title: record.title, content: record.content });
+            } else if (record.type === "event") {
+                events.push({
+                    title: record.title,
+                    day: Number(record.day),
+                    month: Number(record.month),
+                    year: Number(record.year),
+                    time: record.time,
+                    notes: record.notes || ""
+                });
+            }
+        }
+    }
+
+    saveNotes();
+    renderNotes();
+    saveEvents();
+    renderCalendarDays();
+    updateDashboard();
+
+    statusEl.textContent = "File imported successfully!";
 };
 
     reader.readAsText(file);
