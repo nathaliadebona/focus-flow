@@ -254,3 +254,26 @@ deleteEventBtn.addEventListener('click', function() {
 // Initialization calls (run once when the page loads)
 renderCalendarHeader();
 renderCalendarDays();
+
+// ===== DASHBOARD =====
+
+function updateDashboard() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const futureEvents = events.filter(function(event) {
+        const eventDate = new Date(event.year, event.month, event.day);
+        return eventDate >= today;
+    });
+
+    const pastEvents = events.filter(function(event) {
+        const eventDate = new Date(event.year, event.month, event.day);
+        return eventDate < today;
+    });
+
+    document.getElementById("pending-count").textContent = futureEvents.length;
+    document.getElementById("completed-count").textContent = pastEvents.length;
+    document.getElementById("notes-count").textContent = notes.length;
+}
+
+updateDashboard();
