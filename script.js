@@ -9,7 +9,13 @@ let noteBeingEdited = null;
 let notes = JSON.parse(localStorage.getItem('notes')) || [];
 
 function saveNotes() {
-    localStorage.setItem('notes', JSON.stringify(notes));
+    try {
+        localStorage.setItem('notes', JSON.stringify(notes));
+        return true;
+    } catch (error) {
+        alert("Unable to save. Your browser's storage may be full.");
+        return false;
+    }
 }
 
 function renderNotes() {
@@ -218,7 +224,13 @@ function renderAttachmentPreview(attachmentData) {
 }
 
 function saveEvents() {
-    localStorage.setItem('events', JSON.stringify(events));
+    try {
+        localStorage.setItem('events', JSON.stringify(events));
+        return true;
+    } catch (error) {
+        alert("Unable to save your event. Your browser's storage may be full.");
+        returnfalse
+    }
 }
 
 
@@ -505,13 +517,16 @@ importFileInput.addEventListener('change', function() {
             }
         }
 
-        saveNotes();
+        const notesSaved = saveNotes();
         renderNotes();
-        saveEvents();
+        const eventsSaved = saveEvents();
         renderCalendarDays();
         updateDashboard();
 
+        if (notesSaved && eventsSaved) {
         statusEl.textContent = "File imported successfully!";
+        }
+        
         importFileInput.value = '';
     };
 
