@@ -370,6 +370,10 @@ importFileInput.addEventListener('change', function() {
                         return;
                     }
 
+                    if (Number(evt.month) < 0 || Number(evt.month) > 11) {
+                        return;
+                    }
+
                     const daysInMonth = new Date(Number(evt.year), Number(evt.month) + 1, 0).getDate();
 
                     if (Number(evt.day) < 1 || Number(evt.day) > daysInMonth) {
@@ -431,6 +435,10 @@ importFileInput.addEventListener('change', function() {
                     }
 
                     if (isNaN(newEvent.day) || isNaN(newEvent.month) || isNaN(newEvent.year)) {
+                        continue;
+                    }
+
+                    if (newEvent.month < 0 || newEvent.month > 11) {
                         continue;
                     }
 
