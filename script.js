@@ -231,7 +231,7 @@ eventForm.addEventListener('submit', function(event) {
 
     const title = document.getElementById("event-title").value;
     const time = document.getElementById("event-time").value;
-    const notes = document.getElementById("event-notes").value;
+    const eventNotesValue = document.getElementById("event-notes").value;
     
     if (title.trim() === "") {
         alert("Please enter a title for your event.");
@@ -241,7 +241,7 @@ eventForm.addEventListener('submit', function(event) {
     if (eventBeingEdited !== null) {
         events[eventBeingEdited].title = title;
         events[eventBeingEdited].time = time;
-        events[eventBeingEdited].notes = notes;
+        events[eventBeingEdited].notes = eventNotesValue;
         eventBeingEdited = null;
     } else {
         events.push({
@@ -250,7 +250,7 @@ eventForm.addEventListener('submit', function(event) {
             year: currentYear,
             title: title,
             time: time,
-            notes: notes
+            notes: eventNotesValue
         });
     }
 
