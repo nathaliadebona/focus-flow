@@ -74,6 +74,11 @@ noteForm.addEventListener('submit', function(event) {
     const title = document.getElementById("note-title").value;
     const content = document.getElementById("note-content").value;
 
+    if (title.trim() === "") {
+        alert("Please enter a title for your note.");
+        return;
+    }
+
     if (noteBeingEdited !== null) {
         notes[noteBeingEdited].title = title;
         notes[noteBeingEdited].content = content;
@@ -227,6 +232,11 @@ eventForm.addEventListener('submit', function(event) {
     const title = document.getElementById("event-title").value;
     const time = document.getElementById("event-time").value;
     const notes = document.getElementById("event-notes").value;
+    
+    if (title.trim() === "") {
+        alert("Please enter a title for your event.");
+        return;
+    }
 
     if (eventBeingEdited !== null) {
         events[eventBeingEdited].title = title;
@@ -336,6 +346,10 @@ importFileInput.addEventListener('change', function() {
 
             if (data.notes) {
                 data.notes.forEach(function(note) {
+                     if (!note.title || note.title.trim() === "") {
+                        return;
+                    }
+
                     const alreadyExists = notes.some(function(existing) {
                         return existing.title === note.title && existing.content === note.content;
                     });
@@ -348,6 +362,14 @@ importFileInput.addEventListener('change', function() {
 
             if (data.events) {
                 data.events.forEach(function(evt) {
+                    if (!evt.title || evt.title.trim() === "") {
+                        return;
+                    }
+
+                    if (isNaN(Number(evt.day)) || isNaN(Number(evt.month)) || isNaN(Number(evt.year))) {
+                        return;
+                    }
+
                     const alreadyExists = events.some(function(existing) {
                         return existing.title === evt.title && existing.day === evt.day && existing.month === evt.month && existing.year === evt.year;
                     });
@@ -376,6 +398,10 @@ importFileInput.addEventListener('change', function() {
                 });
 
                 if (record.type === "note") {
+                    if (!record.title || record.title.trim() === "") {
+                        continue;
+                    }
+
                     const alreadyExists = notes.some(function(existing) {
                         return existing.title === record.title && existing.content === record.content;
                     });
@@ -383,6 +409,7 @@ importFileInput.addEventListener('change', function() {
                     if (!alreadyExists) {
                         notes.push({ title: record.title, content: record.content });
                     }
+
                 } else if (record.type === "event") {
                     const newEvent = {
                         title: record.title,
@@ -392,6 +419,14 @@ importFileInput.addEventListener('change', function() {
                         time: record.time,
                         notes: record.notes || ""
                     };
+
+                    if (!newEvent.title || newEvent.title.trim() === "") {
+                        continue;
+                    }
+
+                    if (isNaN(newEvent.day) || isNaN(newEvent.month) || isNaN(newEvent.year)) {
+                        continue;
+                    }
 
                     const alreadyExists = events.some(function(existing) {
                         return existing.title === newEvent.title && existing.day === newEvent.day && existing.month === newEvent.month && existing.year === newEvent.year;
