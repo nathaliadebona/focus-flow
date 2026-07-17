@@ -106,6 +106,7 @@ const prevMonthBtn = document.getElementById("prev-month");
 const nextMonthBtn = document.getElementById("next-month");
 const eventForm = document.getElementById("event-form");
 const deleteEventBtn = document.getElementById("delete-event-btn");
+const eventAttachmentInput = document.getElementById("event-attachment");
 
 // Data/state variables
 const today = new Date();
@@ -115,6 +116,7 @@ const monthNames = ["January", "February", "March", "April", "May", "June", "Jul
 let events = JSON.parse(localStorage.getItem('events')) || [];
 let selectedDay = null;
 let eventBeingEdited = null;
+let pendingAttachment = null;
 
 // Functions
 function renderCalendarHeader() {
@@ -169,8 +171,10 @@ function renderCalendarDays() {
                 document.getElementById("event-time").value = events[eventIndex].time;
                 document.getElementById("event-notes").value = events[eventIndex].notes;
                 document.getElementById("event-modal-title").textContent = "Edit Event";
+                renderAttachmentPreview(events[eventIndex].attachment);
             } else {
                 eventBeingEdited = null;
+                renderAttachmentPreview(null);
                 document.getElementById("event-modal-title").textContent = "Add Event";
             }
 
@@ -192,9 +196,31 @@ function renderCalendarDays() {
     }
 }
 
+function renderAttachmentPreview(attachmentData) {
+    const preview = document.getElementById("attachment-preview");
+    preview.innerHTML = '';
+
+    if (!attachmentData) {
+        return;
+    }
+
+    if (attachmentData.startsWith("data:image")) {
+        const img = document.createElement('img');
+        img.src = attachmentData;
+        preview.appendChild(img); 
+    } else {
+        const link = document.createElement('a');
+        link.href = attachmentData;
+        link.textContent = "Download attachment";
+        link.setAttribute('download', 'attachment');
+        preview.appendChild(link);
+    }
+}
+
 function saveEvents() {
     localStorage.setItem('events', JSON.stringify(events));
 }
+
 
 // Click events (addEventListener)
 cancelEventBtn.addEventListener('click', function() {
@@ -242,6 +268,7 @@ eventForm.addEventListener('submit', function(event) {
         events[eventBeingEdited].title = title;
         events[eventBeingEdited].time = time;
         events[eventBeingEdited].notes = eventNotesValue;
+        events[eventBeingEdited].attachment = pendingAttachment;
         eventBeingEdited = null;
     } else {
         events.push({
@@ -250,7 +277,8 @@ eventForm.addEventListener('submit', function(event) {
             year: currentYear,
             title: title,
             time: time,
-            notes: eventNotesValue
+            notes: eventNotesValue,
+            attachment: pendingAttachment
         });
     }
 
@@ -260,6 +288,7 @@ eventForm.addEventListener('submit', function(event) {
 
     eventForm.reset();
     eventModal.close();
+    pendingAttachment = null;
 });
 
 deleteEventBtn.addEventListener('click', function() {
@@ -274,6 +303,23 @@ deleteEventBtn.addEventListener('click', function() {
         eventModal.close();
     }
 });
+
+eventAttachmentInput.addEventListener('change', function() {
+    const attachment = eventAttachmentInput.files[0];
+
+    if (!attachment) {
+        return;
+    }
+
+    const attachmentReader = new FileReader();
+
+    attachmentReader.onload = function(event) {
+        pendingAttachment = event.target.result;
+    }
+
+    attachmentReader.readAsDataURL(attachment);
+
+})
 
 // Initialization calls (run once when the page loads)
 renderCalendarHeader();
