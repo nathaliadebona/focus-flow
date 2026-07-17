@@ -370,6 +370,12 @@ importFileInput.addEventListener('change', function() {
                         return;
                     }
 
+                    const daysInMonth = new Date(Number(evt.year), Number(evt.month) + 1, 0).getDate();
+
+                    if (Number(evt.day) < 1 || Number(evt.day) > daysInMonth) {
+                        return;
+                    }
+
                     const alreadyExists = events.some(function(existing) {
                         return existing.title === evt.title && existing.day === evt.day && existing.month === evt.month && existing.year === evt.year;
                     });
@@ -425,6 +431,12 @@ importFileInput.addEventListener('change', function() {
                     }
 
                     if (isNaN(newEvent.day) || isNaN(newEvent.month) || isNaN(newEvent.year)) {
+                        continue;
+                    }
+
+                    const daysInMonth = new Date(newEvent.year, newEvent.month + 1, 0).getDate();
+
+                    if (newEvent.day < 1 || newEvent.day > daysInMonth) {
                         continue;
                     }
 
