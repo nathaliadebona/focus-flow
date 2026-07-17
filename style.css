@@ -598,3 +598,33 @@ footer p {
 footer i {
     color: var(--color-accent);
 }
+
+@media (max-width: 480px) {
+    #dashboard,
+    #notes,
+    #calendar {
+        text-align: center;
+    }
+
+     #notes-list button {
+        padding: 10px 18px;
+        font-size: 0.95rem;
+    }
+
+    #new-note-btn {
+        padding: 12px 20px;
+        font-size: 1rem;
+    }
+
+     td {
+        min-width: 0;
+        min-height: 44px;
+        padding: 10px 4px;
+        font-size: 0.85rem;
+    }
+
+    .event-label {
+        font-size: 0.55rem;
+        max-width: 40px;
+    }
+}
