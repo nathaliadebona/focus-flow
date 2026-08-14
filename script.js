@@ -532,3 +532,7 @@ importFileInput.addEventListener('change', function() {
 
     reader.readAsText(file);
 });
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
+};
