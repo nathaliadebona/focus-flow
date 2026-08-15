@@ -47,7 +47,7 @@ body {
 main {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 1.5rem 1rem;
 }
 
 h1, h2, h3 {
@@ -59,14 +59,20 @@ section + section {
     border-top: 1px solid var(--color-border);
 }
 
+#dashboard,
+#notes,
+#calendar {
+    text-align: center;
+}
+
 header {
     text-align: center;
-    padding: 1.2rem 2rem;
+    padding: 1.2rem 1rem;
     background-color: var(--color-secondary);
 }
 
 header h1 {
-    font-size: 2rem;
+    font-size: 1.6rem;
     color: var(--color-primary);
 }
 
@@ -77,11 +83,11 @@ header p {
 }
 
 #dashboard {
-    padding: 3.5rem 1.5rem;
+    padding: 2rem 1rem;
 }
 
 #dashboard h2 {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     color: var(--color-primary);
 }
 
@@ -92,7 +98,7 @@ header p {
 
 .summary-cards {
     display: flex;
-    gap: 2rem;
+    gap: 1rem;
     flex-wrap: wrap;
 }
 
@@ -132,24 +138,25 @@ header p {
 
 /* Notes section */
 #notes {
-    padding: 3.5rem 1.5rem;
+    padding: 2rem 1rem;
 }
 
 #notes h2 {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     color: var(--color-primary);
 }
 
 #new-note-btn {
     position: relative;
     overflow: hidden;
-    margin-bottom: 1.5rem;
-    padding: 6px 10px;
+    margin-top: 1rem;
+    margin-bottom: 1.2rem;
+    padding: 10px 16px;
     border: none;
     border-radius: 6px;
     background-color: var(--color-accent);
     color: var(--color-bg);
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     cursor: pointer;
 }
 
@@ -198,8 +205,8 @@ header p {
 
 #notes-list button {
     margin-right: 0.5rem;
-    padding: 6px 12px;
-    font-size: 0.85rem;
+    padding: 10px 18px;
+    font-size: 0.95rem;
     border: none;
     border-radius: 6px;
     cursor: pointer;
@@ -332,11 +339,11 @@ header p {
 
 /* Calendar section*/
 #calendar {
-    padding: 3.5rem 1.5rem;
+    padding: 2rem 1rem;
 }
 
 #calendar h2 {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     color: var(--color-primary);
 }
 
@@ -378,17 +385,18 @@ th {
 }
 
 td {
-    min-width: 90px;
-    height: 70px;
-    padding: 14px;
+    min-width: 0;
+    min-height: 44px;
+    padding: 10px 4px;
     text-align: center;
     vertical-align: top;
+    font-size: 0.85rem;
 }
 
 .event-label {
-    max-width: 90px;
+    max-width: 40px;
     margin: 0.5rem auto 0;
-    font-size: 0.7rem;
+    font-size: 0.55rem;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -577,11 +585,11 @@ td.has-event:hover {
 /* Import section */
 
 #import {
-    padding: 3.5rem 1.5rem;
+    padding: 2rem 1rem;
 }
 
 #import h2 {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     color: var(--color-primary);
 }
 
@@ -617,32 +625,62 @@ footer i {
     color: var(--color-accent);
 }
 
-@media (max-width: 480px) {
+@media (min-width: 481px) {
+    main {
+        padding: 2rem;
+    }
+
+    header {
+        padding: 1.2rem 2rem;
+    }
+
+    header h1 {
+        font-size: 2rem;
+    }
+
+    #dashboard,
+    #notes,
+    #calendar,
+    #import {
+        padding: 3.5rem 1.5rem;
+    }
+
+    #dashboard h2,
+    #notes h2,
+    #calendar h2,
+    #import h2 {
+        font-size: 1.8rem;
+    }
+
+    .summary-cards {
+        gap: 2rem;
+    }
+
     #dashboard,
     #notes,
     #calendar {
-        text-align: center;
+        text-align: left;
     }
 
-     #notes-list button {
-        padding: 10px 18px;
-        font-size: 0.95rem;
-    }
-
-    #new-note-btn {
-        padding: 12px 20px;
-        font-size: 1rem;
-    }
-
-     td {
-        min-width: 0;
-        min-height: 44px;
-        padding: 10px 4px;
+    #notes-list button {
+        padding: 6px 12px;
         font-size: 0.85rem;
     }
 
+    #new-note-btn {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+    }
+
+    td {
+        min-width: 90px;
+        min-height: 70px;
+        padding: 14px;
+        font-size: 1rem;
+    }
+
     .event-label {
-        font-size: 0.55rem;
-        max-width: 40px;
+        max-width: 90px;
+        font-size: 0.7rem;
     }
 }
