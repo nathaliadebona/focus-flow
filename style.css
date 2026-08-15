@@ -1,3 +1,21 @@
+@font-face {
+    font-family: 'Poppins';
+    src: url('fonts/poppins-bold.woff2') format('woff2');
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('fonts/inter-regular.woff2') format('woff2');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('fonts/inter-medium.woff2') format('woff2');
+    font-weight: 500;
+}
+
 :root {
    --color-primary: #2C4A52;
     --color-primary-light: #3D6470;
