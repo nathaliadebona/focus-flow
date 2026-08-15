@@ -1,0 +1,102 @@
+// ===== NOTES =====
+const noteModal = document.getElementById("note-modal");
+const openNoteModal = document.getElementById("new-note-btn");
+const cancelNoteModal = document.getElementById("cancel-note-btn");
+const noteForm = document.getElementById("note-form");
+const emptyState = document.getElementById("notes-empty-state");
+const noteList = document.getElementById("notes-list");
+let noteBeingEdited = null;
+let notes = JSON.parse(localStorage.getItem('notes')) || [];
+
+function saveNotes() {
+    try {
+        localStorage.setItem('notes', JSON.stringify(notes));
+        return true;
+    } catch (error) {
+        alert("Unable to save. Your browser's storage may be full.");
+        return false;
+    }
+}
+
+function renderNotes() {
+    noteList.innerHTML = '';
+
+    if (notes.length === 0) {
+        emptyState.style.display = 'block';
+    } else {
+        emptyState.style.display = 'none';
+    }
+
+    notes.forEach(function(note, index) {
+        const noteItem = document.createElement('li');
+
+        const noteName = document.createElement('h3');
+        noteName.textContent = note.title;
+        noteItem.appendChild(noteName);
+
+        const noteText = document.createElement('p');
+        noteText.textContent = note.content;
+        noteItem.appendChild(noteText);
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = "Delete";
+        deleteBtn.classList.add('delete-btn');
+        noteItem.appendChild(deleteBtn);
+        deleteBtn.addEventListener('click', function() {
+            notes.splice(index, 1);
+            saveNotes();
+            renderNotes();
+            updateDashboard();
+        });
+
+        const editBtn = document.createElement('button');
+        editBtn.textContent = "Edit";
+        editBtn.classList.add('edit-btn');
+        noteItem.appendChild(editBtn);
+        editBtn.addEventListener('click', function() {
+            document.getElementById("note-title").value = note.title;
+            document.getElementById("note-content").value = note.content;
+            noteBeingEdited = index;
+            noteModal.showModal();
+        });
+
+        noteList.appendChild(noteItem);
+    });
+}
+
+openNoteModal.addEventListener('click', function() {
+    noteModal.showModal();
+});
+
+cancelNoteModal.addEventListener('click', function() {
+    noteBeingEdited = null;
+    noteForm.reset();
+    noteModal.close();
+});
+
+noteForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const title = document.getElementById("note-title").value;
+    const content = document.getElementById("note-content").value;
+
+    if (title.trim() === "") {
+        alert("Please enter a title for your note.");
+        return;
+    }
+
+    if (noteBeingEdited !== null) {
+        notes[noteBeingEdited].title = title;
+        notes[noteBeingEdited].content = content;
+        noteBeingEdited = null;
+    } else {
+        notes.push({ title: title, content: content });
+    }
+
+    saveNotes();
+    renderNotes();
+    updateDashboard();
+
+    noteForm.reset();
+    noteModal.close();
+});
