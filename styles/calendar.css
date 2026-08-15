@@ -93,6 +93,14 @@ td.has-event:hover {
     border-radius: 8px;
 }
 
+#attachment-preview a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--color-text-secondary);
+}
+
 /* Event modal */
 
 #event-modal {

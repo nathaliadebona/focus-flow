@@ -6,8 +6,10 @@ const cancelNoteModal = document.getElementById("cancel-note-btn");
 const noteForm = document.getElementById("note-form");
 const emptyState = document.getElementById("notes-empty-state");
 const noteList = document.getElementById("notes-list");
+const noteAttachmentInput = document.getElementById("note-attachment");
 let noteBeingEdited = null;
 let notes = JSON.parse(localStorage.getItem('notes')) || [];
+let pendingNoteAttachment = null;
 
 function saveNotes() {
     try {
@@ -59,6 +61,7 @@ function renderNotes() {
             document.getElementById("note-title").value = note.title;
             document.getElementById("note-content").value = note.content;
             noteBeingEdited = index;
+            renderAttachmentPreview(note.attachment, "note-attachment-preview");
             noteModal.showModal();
         });
 
@@ -68,6 +71,7 @@ function renderNotes() {
 
 openNoteModal.addEventListener('click', function() {
     noteError.style.display = 'none';
+    renderAttachmentPreview(null, "note-attachment-preview");
     noteModal.showModal();
 });
 
@@ -76,6 +80,7 @@ cancelNoteModal.addEventListener('click', function() {
     noteError.style.display = 'none';
     noteForm.reset();
     noteModal.close();
+    pendingNoteAttachment = null;
 });
 
 noteForm.addEventListener('submit', function(event) {
@@ -94,9 +99,10 @@ noteForm.addEventListener('submit', function(event) {
     if (noteBeingEdited !== null) {
         notes[noteBeingEdited].title = title;
         notes[noteBeingEdited].content = content;
+        notes[noteBeingEdited].attachment = pendingNoteAttachment;
         noteBeingEdited = null;
     } else {
-        notes.push({ title: title, content: content });
+        notes.push({ title: title, content: content, attachment: pendingNoteAttachment });
     }
 
     saveNotes();
@@ -105,4 +111,21 @@ noteForm.addEventListener('submit', function(event) {
 
     noteForm.reset();
     noteModal.close();
+    pendingNoteAttachment = null;
 });
+
+noteAttachmentInput.addEventListener('change', function() {
+    const attachment = noteAttachmentInput.files[0];
+
+    if (!attachment) {
+        return;
+    }
+
+    const attachmentReader = new FileReader();
+
+    attachmentReader.onload = function(event) {
+        pendingNoteAttachment = event.target.result;
+    }
+
+    attachmentReader.readAsDataURL(attachment);
+})

@@ -150,6 +150,25 @@
     resize: vertical;
 }
 
+#note-attachment-preview img {
+    max-width: 100%;
+    max-height: 150px;
+    border-radius: 8px;
+}
+
+#note-attachment-preview a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--color-text-secondary);
+}
+
+#note-modal input[type="file"] {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+}
+
 #note-modal button[type="submit"] {
     position: relative;
     overflow: hidden;
@@ -208,3 +227,4 @@
 #note-modal button[type="button"]:hover::before {
     transform: scaleX(1);
 }
+

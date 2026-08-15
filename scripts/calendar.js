@@ -73,10 +73,10 @@ function renderCalendarDays() {
                 document.getElementById("event-time").value = events[eventIndex].time;
                 document.getElementById("event-notes").value = events[eventIndex].notes;
                 document.getElementById("event-modal-title").textContent = "Edit Event";
-                renderAttachmentPreview(events[eventIndex].attachment);
+                renderAttachmentPreview(events[eventIndex].attachment, "attachment-preview");
             } else {
                 eventBeingEdited = null;
-                renderAttachmentPreview(null);
+                renderAttachmentPreview(null, "attachment-preview");
                 document.getElementById("event-modal-title").textContent = "Add Event";
             }
 
@@ -100,8 +100,8 @@ function renderCalendarDays() {
     }
 }
 
-function renderAttachmentPreview(attachmentData) {
-    const preview = document.getElementById("attachment-preview");
+function renderAttachmentPreview(attachmentData, previewElementId) {
+    const preview = document.getElementById(previewElementId);
     preview.innerHTML = '';
 
     if (!attachmentData) {
@@ -115,7 +115,15 @@ function renderAttachmentPreview(attachmentData) {
     } else {
         const link = document.createElement('a');
         link.href = attachmentData;
-        link.textContent = "Download attachment";
+        const linkIcon = document.createElement('span');
+        linkIcon.classList.add('download-icon');
+        const downloadIcon = document.createElement('i');
+        downloadIcon.classList.add('fa-solid', 'fa-download');
+        linkIcon.appendChild(downloadIcon);
+        link.appendChild(linkIcon);
+        const linkText = document.createElement('span');
+        linkText.textContent = "Download attachment";
+        link.appendChild(linkText);
         link.setAttribute('download', 'attachment');
         preview.appendChild(link);
     }
@@ -139,6 +147,7 @@ cancelEventBtn.addEventListener('click', function() {
     eventForm.reset();
     document.getElementById("event-modal-title").textContent = "Add Event";
     eventModal.close();
+    pendingAttachment = null;
 });
 
 prevMonthBtn.addEventListener('click', function() {
