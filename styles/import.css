@@ -1,0 +1,24 @@
+#import {
+    padding: 2rem 1rem;
+}
+
+#import h2 {
+    font-size: 1.6rem;
+    color: var(--color-primary);
+}
+
+#import p {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-secondary);
+}
+
+#import-file {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+}
+
+#import-status {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+}

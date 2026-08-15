@@ -1,0 +1,32 @@
+header {
+    text-align: center;
+    padding: 1.2rem 1rem;
+    background-color: var(--color-secondary);
+}
+
+header h1 {
+    font-size: 1.6rem;
+    color: var(--color-primary);
+}
+
+header p {
+    font-size: 1rem;
+    margin-top: 0.2rem;
+    color: var(--color-text-secondary);
+}
+
+/*Footer*/
+footer {
+    text-align: center;
+    padding: 1.5rem;
+    background-color: var(--color-secondary);
+}
+
+footer p {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+}
+
+footer i {
+    color: var(--color-accent);
+}

@@ -1,0 +1,60 @@
+
+@media (min-width: 481px) {
+    main {
+        padding: 2rem;
+    }
+
+    header {
+        padding: 1.2rem 2rem;
+    }
+
+    header h1 {
+        font-size: 2rem;
+    }
+
+    #dashboard,
+    #notes,
+    #calendar,
+    #import {
+        padding: 3.5rem 1.5rem;
+    }
+
+    #dashboard h2,
+    #notes h2,
+    #calendar h2,
+    #import h2 {
+        font-size: 1.8rem;
+    }
+
+    .summary-cards {
+        gap: 2rem;
+    }
+
+    #dashboard,
+    #notes,
+    #calendar {
+        text-align: left;
+    }
+
+    #notes-list button {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+    }
+
+    #new-note-btn {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+    }
+
+    td {
+        min-width: 90px;
+        min-height: 70px;
+        padding: 14px;
+        font-size: 1rem;
+    }
+
+    .event-label {
+        max-width: 90px;
+        font-size: 0.7rem;
+    }
+}

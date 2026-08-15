@@ -1,0 +1,243 @@
+#calendar {
+    padding: 2rem 1rem;
+}
+
+#calendar h2 {
+    font-size: 1.6rem;
+    color: var(--color-primary);
+}
+
+#calendar nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+#current-month {
+    font-size: 1.2rem;
+    color: var(--color-primary);
+    min-width: 150px;
+}
+
+#prev-month,
+#next-month {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: var(--color-primary);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+th {
+    padding: 10px;
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+}
+
+td {
+    min-width: 0;
+    min-height: 44px;
+    padding: 10px 4px;
+    text-align: center;
+    vertical-align: top;
+    font-size: 0.85rem;
+}
+
+.event-label {
+    max-width: 40px;
+    margin: 0.5rem auto 0;
+    font-size: 0.55rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+}
+
+td.today {
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+    border-radius: 8px;
+}
+
+td.has-event {
+    background-color: var(--color-event-bg);
+    color: var(--color-primary);
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+td:hover {
+    background-color: var(--color-secondary);
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+td.has-event:hover {
+    background-color: var(--color-primary-light);
+    color: var(--color-bg);
+}
+
+#attachment-preview img {
+    max-width: 100%;
+    max-height: 150px;
+    border-radius: 8px;
+}
+
+/* Event modal */
+
+#event-modal {
+    margin: auto;
+    width: 90%;
+    max-width: 400px;
+    padding: 2rem;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--color-bg);
+}
+
+#event-modal::backdrop {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+#event-modal-title {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: var(--color-primary);
+}
+
+#event-modal form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#event-modal label {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--color-text);
+}
+
+#event-modal input,
+#event-modal textarea {
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+}
+
+#event-modal textarea {
+    resize: vertical;
+}
+
+#event-modal input[type="file"] {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+}
+
+/* Save Event */
+#event-modal button[type="submit"] {
+    position: relative;
+    overflow: hidden;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+    cursor: pointer;
+}
+
+#event-modal button[type="submit"] span {
+    position: relative;
+    z-index: 1;
+}
+
+#event-modal button[type="submit"]::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-accent-dark);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s ease;
+}
+
+#event-modal button[type="submit"]:hover::before {
+    transform: scaleX(1);
+}
+
+/* Delete Event */
+#delete-event-btn {
+    position: relative;
+    overflow: hidden;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    background-color: transparent;
+    color: #B33A3A;
+    cursor: pointer;
+}
+
+#delete-event-btn span {
+    position: relative;
+    z-index: 1;
+}
+
+#delete-event-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: #B33A3A;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s ease;
+}
+
+#delete-event-btn:hover::before {
+    transform: scaleX(1);
+}
+
+#delete-event-btn:hover span {
+    color: var(--color-bg);
+}
+
+/* Cancel */
+#cancel-event-btn {
+    position: relative;
+    overflow: hidden;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    background-color: transparent;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+}
+
+#cancel-event-btn span {
+    position: relative;
+    z-index: 1;
+}
+
+#cancel-event-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-secondary);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s ease;
+}
+
+#cancel-event-btn:hover::before {
+    transform: scaleX(1);
+}
