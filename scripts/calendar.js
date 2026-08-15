@@ -2,6 +2,7 @@
 
 // Element references
 const eventModal = document.getElementById("event-modal");
+const eventError = document.getElementById("event-error");
 const cancelEventBtn = document.getElementById("cancel-event-btn");
 const prevMonthBtn = document.getElementById("prev-month");
 const nextMonthBtn = document.getElementById("next-month");
@@ -79,6 +80,8 @@ function renderCalendarDays() {
                 document.getElementById("event-modal-title").textContent = "Add Event";
             }
 
+            eventError.style.display = 'none';
+
             eventModal.showModal();
         });
 
@@ -132,6 +135,7 @@ function saveEvents() {
 // Click events (addEventListener)
 cancelEventBtn.addEventListener('click', function() {
     eventBeingEdited = null;
+    eventError.style.display = 'none';
     eventForm.reset();
     document.getElementById("event-modal-title").textContent = "Add Event";
     eventModal.close();
@@ -167,9 +171,11 @@ eventForm.addEventListener('submit', function(event) {
     const eventNotesValue = document.getElementById("event-notes").value;
     
     if (title.trim() === "") {
-        alert("Please enter a title for your event.");
+        eventError.style.display = 'block';
         return;
     }
+
+    eventError.style.display = 'none';
 
     if (eventBeingEdited !== null) {
         events[eventBeingEdited].title = title;

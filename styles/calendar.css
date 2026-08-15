@@ -109,6 +109,16 @@ td.has-event:hover {
     background-color: rgba(0, 0, 0, 0.4);
 }
 
+#event-error {
+    display: none;
+    padding: 0.6rem 0.8rem;
+    margin-bottom: 1rem;
+    border: 1px solid #C0392B;
+    border-radius: 8px;
+    background-color: #FBE4E1;
+    color: #C0392B;
+}
+
 #event-modal-title {
     font-size: 1.3rem;
     margin-bottom: 1rem;

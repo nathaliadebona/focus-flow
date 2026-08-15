@@ -115,6 +115,16 @@
     background-color: rgba(0, 0, 0, 0.4);
 }
 
+#note-error {
+    display: none;
+    padding: 0.6rem 0.8rem;
+    margin-bottom: 1rem;
+    border: 1px solid #C0392B;
+    border-radius: 8px;
+    background-color: #FBE4E1;
+    color: #C0392B;
+}
+
 #note-modal form {
     display: flex;
     flex-direction: column;

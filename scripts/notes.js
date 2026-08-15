@@ -1,5 +1,6 @@
 // ===== NOTES =====
 const noteModal = document.getElementById("note-modal");
+const noteError = document.getElementById("note-error");
 const openNoteModal = document.getElementById("new-note-btn");
 const cancelNoteModal = document.getElementById("cancel-note-btn");
 const noteForm = document.getElementById("note-form");
@@ -54,6 +55,7 @@ function renderNotes() {
         editBtn.classList.add('edit-btn');
         noteItem.appendChild(editBtn);
         editBtn.addEventListener('click', function() {
+            noteError.style.display = 'none';
             document.getElementById("note-title").value = note.title;
             document.getElementById("note-content").value = note.content;
             noteBeingEdited = index;
@@ -65,11 +67,13 @@ function renderNotes() {
 }
 
 openNoteModal.addEventListener('click', function() {
+    noteError.style.display = 'none';
     noteModal.showModal();
 });
 
 cancelNoteModal.addEventListener('click', function() {
     noteBeingEdited = null;
+    noteError.style.display = 'none';
     noteForm.reset();
     noteModal.close();
 });
@@ -81,9 +85,11 @@ noteForm.addEventListener('submit', function(event) {
     const content = document.getElementById("note-content").value;
 
     if (title.trim() === "") {
-        alert("Please enter a title for your note.");
+        noteError.style.display = 'block';
         return;
     }
+
+    noteError.style.display = 'none';
 
     if (noteBeingEdited !== null) {
         notes[noteBeingEdited].title = title;
