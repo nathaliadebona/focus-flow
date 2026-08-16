@@ -33,9 +33,37 @@ function renderNotes() {
     notes.forEach(function(note, index) {
         const noteItem = document.createElement('li');
 
+        const noteHeader = document.createElement('div');
+        noteHeader.classList.add('note-header');
+
         const noteName = document.createElement('h3');
         noteName.textContent = note.title;
-        noteItem.appendChild(noteName);
+        noteHeader.appendChild(noteName);
+        noteItem.appendChild(noteHeader);
+
+        note.tags.forEach(function(tag) {
+            const tagSpan = document.createElement('span');
+            tagSpan.textContent = tag;
+            tagSpan.classList.add('note-tag');
+
+            if (tag === "Urgent") {
+                tagSpan.classList.add('tag-urgent');
+            }
+
+            if (tag === "In Progress") {
+                tagSpan.classList.add('tag-in-progress');
+            }
+
+            if (tag === "Done") {
+                tagSpan.classList.add('tag-done');
+            }
+
+            if (tag === "To Do") {
+                tagSpan.classList.add('tag-todo');
+            }
+
+            noteHeader.appendChild(tagSpan);
+        }); 
 
         const noteText = document.createElement('p');
         noteText.textContent = note.content;
@@ -60,6 +88,10 @@ function renderNotes() {
             noteError.style.display = 'none';
             document.getElementById("note-title").value = note.title;
             document.getElementById("note-content").value = note.content;
+            document.getElementById("tag-urgent").checked = note.tags.includes("Urgent");
+            document.getElementById("tag-in-progress").checked = note.tags.includes("In Progress");
+            document.getElementById("tag-done").checked = note.tags.includes("Done");
+            document.getElementById("tag-todo").checked = note.tags.includes("To Do");
             noteBeingEdited = index;
             renderAttachmentPreview(note.attachment, "note-attachment-preview");
             noteModal.showModal();
@@ -71,6 +103,10 @@ function renderNotes() {
 
 openNoteModal.addEventListener('click', function() {
     noteError.style.display = 'none';
+    document.getElementById("tag-urgent").checked = false;
+    document.getElementById("tag-in-progress").checked = false;
+    document.getElementById("tag-done").checked = false;
+    document.getElementById("tag-todo").checked = false;
     renderAttachmentPreview(null, "note-attachment-preview");
     noteModal.showModal();
 });
@@ -88,6 +124,23 @@ noteForm.addEventListener('submit', function(event) {
 
     const title = document.getElementById("note-title").value;
     const content = document.getElementById("note-content").value;
+    const tags = [];
+
+    if (document.getElementById("tag-urgent").checked) {
+        tags.push("Urgent");
+    }
+
+    if (document.getElementById("tag-in-progress").checked) {
+        tags.push("In Progress");
+    }
+
+    if (document.getElementById("tag-done").checked) {
+        tags.push("Done");
+    }
+
+    if (document.getElementById("tag-todo").checked) {
+        tags.push("To Do");
+    }
 
     if (title.trim() === "") {
         noteError.style.display = 'block';
@@ -100,9 +153,10 @@ noteForm.addEventListener('submit', function(event) {
         notes[noteBeingEdited].title = title;
         notes[noteBeingEdited].content = content;
         notes[noteBeingEdited].attachment = pendingNoteAttachment;
+        notes[noteBeingEdited].tags = tags;
         noteBeingEdited = null;
     } else {
-        notes.push({ title: title, content: content, attachment: pendingNoteAttachment });
+        notes.push({ title: title, content: content, attachment: pendingNoteAttachment, tags: tags });
     }
 
     saveNotes();
