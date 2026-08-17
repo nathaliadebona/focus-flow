@@ -11,6 +11,14 @@ const checklistBtn = document.getElementById("checklist-item-btn");
 const checklistItemInput = document.getElementById("checklist-item-input");
 const checklistItemsContainer = document.getElementById("checklist-items");
 const checklistError = document.getElementById("checklist-error");
+const searchNotesInput = document.getElementById('search-notes');
+const filterBtn = document.getElementById('filter-btn');
+const filterPanel = document.getElementById('filter-panel');
+const filterUrgent = document.getElementById('filter-urgent');
+const filterInProgress = document.getElementById('filter-in-progress');
+const filterDone = document.getElementById('filter-done');
+const filterToDo = document.getElementById('filter-todo');
+const filterCheckboxes = [filterUrgent, filterInProgress, filterDone, filterToDo];
 let noteBeingEdited = null;
 let notes = JSON.parse(localStorage.getItem('notes')) || [];
 let pendingNoteAttachment = null;
@@ -26,16 +34,17 @@ function saveNotes() {
     }
 }
 
-function renderNotes() {
+function renderNotes(notesToRender) {
     noteList.innerHTML = '';
 
-    if (notes.length === 0) {
+    if (notesToRender.length === 0) {
         emptyState.style.display = 'block';
     } else {
         emptyState.style.display = 'none';
     }
 
-    notes.forEach(function(note, index) {
+    notesToRender.forEach(function(note, index) {
+        const realIndex = notes.indexOf(note);
         const noteItem = document.createElement('li');
 
         const noteHeader = document.createElement('div');
@@ -94,9 +103,9 @@ function renderNotes() {
         deleteBtn.classList.add('delete-btn');
         noteItem.appendChild(deleteBtn);
         deleteBtn.addEventListener('click', function() {
-            notes.splice(index, 1);
+            notes.splice(realIndex, 1);
             saveNotes();
-            renderNotes();
+            renderNotes(getFilteredNotes());
             updateDashboard();
         });
 
@@ -112,7 +121,7 @@ function renderNotes() {
             document.getElementById("tag-in-progress").checked = note.tags.includes("In Progress");
             document.getElementById("tag-done").checked = note.tags.includes("Done");
             document.getElementById("tag-todo").checked = note.tags.includes("To Do");
-            noteBeingEdited = index;
+            noteBeingEdited = realIndex;
             renderAttachmentPreview(note.attachment, "note-attachment-preview");
             pendingNoteChecklist = note.checklist || [];
             renderChecklistItems();
@@ -155,6 +164,36 @@ function renderChecklistItems () {
         itemWrapper.appendChild(deleteItemBtn);
         checklistItemsContainer.appendChild(itemWrapper);
     });
+}
+
+function getFilteredNotes() {
+    const searchText = searchNotesInput.value;
+
+    const selectedFilterTags = [];
+    
+    if (filterUrgent.checked) {
+        selectedFilterTags.push("Urgent");
+    }
+
+    if (filterInProgress.checked) {
+        selectedFilterTags.push("In Progress");
+    }
+
+    if (filterDone.checked) {
+        selectedFilterTags.push("Done");
+    }
+
+    if (filterToDo.checked) {
+        selectedFilterTags.push("To Do");
+    }
+
+    const filteredNotes = notes.filter(function(note) {
+        const matchesSearch = note.title.toLowerCase().includes(searchText.toLowerCase()) || note.content.toLowerCase().includes(searchText.toLowerCase());
+        const matchesTags = selectedFilterTags.length === 0 || note.tags.some(function(tag) { return selectedFilterTags.includes(tag); });
+        return matchesSearch && matchesTags;
+    });
+
+    return filteredNotes;
 }
 
 openNoteModal.addEventListener('click', function() {
@@ -219,7 +258,7 @@ noteForm.addEventListener('submit', function(event) {
     }
 
     saveNotes();
-    renderNotes();
+    renderNotes(getFilteredNotes());
     updateDashboard();
 
     noteForm.reset();
@@ -263,4 +302,29 @@ checklistItemInput.addEventListener('keydown', function(event) {
         event.preventDefault();
         checklistBtn.click();
     }
+});
+
+filterBtn.addEventListener('click', function() {
+    if (filterPanel.style.display === "flex") {
+        filterPanel.style.display = "none";
+    } else {
+        filterPanel.style.display = "flex";
+    }
+});
+
+filterCheckboxes.forEach(function(checkbox) {
+    checkbox.addEventListener('change', function() {
+        filterPanel.style.display = "none";
+        renderNotes(getFilteredNotes());
+    });
+});
+
+document.addEventListener('click', function(event) {
+    if (!filterPanel.contains(event.target) && !filterBtn.contains(event.target)) {
+        filterPanel.style.display = "none";
+    }
+});
+
+searchNotesInput.addEventListener('input', function() {
+    renderNotes(getFilteredNotes());
 });

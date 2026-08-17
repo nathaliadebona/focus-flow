@@ -46,6 +46,11 @@
         font-size: 0.8rem;
     }
 
+    .notes-toolbar {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
     td {
         min-width: 90px;
         min-height: 70px;

@@ -76,7 +76,30 @@
         <section id="notes">
             <h2>Notes</h2>
 
-            <button id="new-note-btn" type="button"><span><i class="fa-solid fa-plus"></i> New Note</span></button>
+            <div class="notes-toolbar">
+                <button id="new-note-btn" type="button"><span><i class="fa-solid fa-plus"></i> New Note</span></button>
+                <div class="search-filter-group">
+                    <div class="search-wrapper">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="search" id="search-notes" placeholder="Search notes...">
+                    </div>
+
+                    <button id="filter-btn" type="button"><i class="fa-solid fa-filter"></i></button>
+                    <div class="filter-panel" id="filter-panel">
+                        <input type="checkbox" id="filter-urgent">
+                        <label for="filter-urgent" class="tag-label">Urgent</label>
+
+                        <input type="checkbox" id="filter-in-progress">
+                        <label for="filter-in-progress" class="tag-label">In Progress</label>
+
+                        <input type="checkbox" id="filter-done">
+                        <label for="filter-done" class="tag-label">Done</label>
+
+                        <input type="checkbox" id="filter-todo">
+                        <label for="filter-todo" class="tag-label">To Do</label>
+                    </div>
+                </div>
+            </div>
 
             <ul id="notes-list"></ul>
 
