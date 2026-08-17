@@ -7,9 +7,14 @@ const noteForm = document.getElementById("note-form");
 const emptyState = document.getElementById("notes-empty-state");
 const noteList = document.getElementById("notes-list");
 const noteAttachmentInput = document.getElementById("note-attachment");
+const checklistBtn = document.getElementById("checklist-item-btn");
+const checklistItemInput = document.getElementById("checklist-item-input");
+const checklistItemsContainer = document.getElementById("checklist-items");
+const checklistError = document.getElementById("checklist-error");
 let noteBeingEdited = null;
 let notes = JSON.parse(localStorage.getItem('notes')) || [];
 let pendingNoteAttachment = null;
+let pendingNoteChecklist = [];
 
 function saveNotes() {
     try {
@@ -69,6 +74,21 @@ function renderNotes() {
         noteText.textContent = note.content;
         noteItem.appendChild(noteText);
 
+        if (note.checklist && note.checklist.length > 0) {
+            const itemsMarcados = note.checklist.filter(function(item) {
+                return item.checked === true;
+            });
+
+            const checkedCount = itemsMarcados.length;
+
+            const checklistText = checkedCount + "/" + note.checklist.length + " concluídos";
+
+            const checklistProgress = document.createElement('p');
+            checklistProgress.classList.add('checklist-progress');
+            checklistProgress.textContent = checklistText;
+            noteItem.appendChild(checklistProgress);
+        }
+
         const deleteBtn = document.createElement('button');
         deleteBtn.textContent = "Delete";
         deleteBtn.classList.add('delete-btn');
@@ -94,10 +114,46 @@ function renderNotes() {
             document.getElementById("tag-todo").checked = note.tags.includes("To Do");
             noteBeingEdited = index;
             renderAttachmentPreview(note.attachment, "note-attachment-preview");
+            pendingNoteChecklist = note.checklist || [];
+            renderChecklistItems();
             noteModal.showModal();
-        });
+        }); 
 
         noteList.appendChild(noteItem);
+    });
+}
+
+function renderChecklistItems () {
+    checklistItemsContainer.innerHTML = '';
+
+    pendingNoteChecklist.forEach(function (item, index) {
+        const itemWrapper = document.createElement('div');
+        itemWrapper.classList.add('checklist-item');
+
+        const itemCheckbox = document.createElement('input');
+        itemCheckbox.type = 'checkbox';
+        itemCheckbox.checked = item.checked;
+
+        const labelCheckbox = document.createElement('label');
+        labelCheckbox.textContent = item.text;
+
+        const deleteItemBtn = document.createElement('button');
+        deleteItemBtn.type = "button";
+        deleteItemBtn.classList.add('delete-item-btn');
+
+        const deleteItemIcon = document.createElement('i');
+        deleteItemIcon.classList.add('fa-solid', 'fa-xmark');
+
+        deleteItemBtn.addEventListener('click', function() {
+              pendingNoteChecklist.splice(index, 1);
+              renderChecklistItems();
+        });
+
+        itemWrapper.appendChild(itemCheckbox);
+        itemWrapper.appendChild(labelCheckbox);
+        deleteItemBtn.appendChild(deleteItemIcon);
+        itemWrapper.appendChild(deleteItemBtn);
+        checklistItemsContainer.appendChild(itemWrapper);
     });
 }
 
@@ -108,6 +164,8 @@ openNoteModal.addEventListener('click', function() {
     document.getElementById("tag-done").checked = false;
     document.getElementById("tag-todo").checked = false;
     renderAttachmentPreview(null, "note-attachment-preview");
+    pendingNoteChecklist = [];
+    renderChecklistItems();
     noteModal.showModal();
 });
 
@@ -154,9 +212,10 @@ noteForm.addEventListener('submit', function(event) {
         notes[noteBeingEdited].content = content;
         notes[noteBeingEdited].attachment = pendingNoteAttachment;
         notes[noteBeingEdited].tags = tags;
+        notes[noteBeingEdited].checklist = pendingNoteChecklist;
         noteBeingEdited = null;
     } else {
-        notes.push({ title: title, content: content, attachment: pendingNoteAttachment, tags: tags });
+        notes.push({ title: title, content: content, attachment: pendingNoteAttachment, tags: tags, checklist: pendingNoteChecklist });
     }
 
     saveNotes();
@@ -182,4 +241,26 @@ noteAttachmentInput.addEventListener('change', function() {
     }
 
     attachmentReader.readAsDataURL(attachment);
-})
+});
+
+checklistBtn.addEventListener('click', function() {
+    const itemText = checklistItemInput.value;
+    if (itemText.trim() === "") {
+        checklistError.style.display = 'block';
+        return;
+    }
+
+    checklistError.style.display = 'none';
+    
+    const newItem = { text: itemText, checked: false };
+    pendingNoteChecklist.push(newItem);
+    renderChecklistItems();
+    checklistItemInput.value = "";
+});
+
+checklistItemInput.addEventListener('keydown', function(event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        checklistBtn.click();
+    }
+});

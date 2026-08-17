@@ -99,6 +99,16 @@
     margin-bottom: 1rem;
 }
 
+#notes-list .checklist-progress {
+    display: block;
+    width: fit-content;
+    padding: 0.3rem;
+    border-radius: 6px;
+    background-color: var(--color-bg);
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+}
+
 #notes-list button {
     margin-right: 0.5rem;
     padding: 10px 18px;
@@ -184,18 +194,91 @@
     resize: vertical;
 }
 
-#note-modal fieldset {
+#note-modal .checklist-item {
+    display: flex;
+    gap: 0.5rem;
+}
+
+#note-modal .checklist-fieldset {
+    border: none;
+}
+
+#note-modal .checklist-fieldset legend {
+    margin-bottom: 1rem;
+}
+
+#note-modal #checklist-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: var(--color-secondary);
+}
+
+#note-modal .checklist-item label {
+    font-size: 0.95rem;
+    font-weight: 400;
+}
+
+#note-modal .delete-item-btn {
+    margin-left: auto;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    color: var(--color-text-secondary);
+}
+
+#note-modal .delete-item-btn:hover {
+    color: #C0392B;
+}
+
+#note-modal .checklist-item input[type="checkbox"] {
+    accent-color: var(--color-accent);
+}
+
+#note-modal #checklist-item-input {
+    width: 100%;
+}
+
+#note-modal #checklist-item-btn {
+    padding: 0.5rem 1rem;
+    margin-top: 0.5rem;
+    border: 1px solid var(--color-accent);
+    border-radius: 8px;
+    background-color: transparent;
+    color: var(--color-accent);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#note-modal #checklist-item-btn:hover {
+    background-color: var(--color-secondary);
+}
+
+#note-modal #checklist-error {
+    display: none;
+    padding: 0.6rem 0.8rem;
+    margin-bottom: 1rem;
+    border: 1px solid #C0392B;
+    border-radius: 8px;
+    background-color: #FBE4E1;
+    color: #C0392B;
+}
+
+#note-modal .tags-fieldset {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
     border: none;
 }
 
-#note-modal legend {
+#note-modal .tags-fieldset legend {
     margin-bottom: 1rem;
 }
 
-#note-modal input[type="checkbox"] {
+#note-modal .tags-fieldset input[type="checkbox"] {
     display: none;
 }
 
@@ -296,7 +379,7 @@
     transform: scaleX(1);
 }
 
-#note-modal button[type="button"] {
+#note-modal button[type="button"]:not(.delete-item-btn) {
     position: relative;
     overflow: hidden;
     padding: 0.7rem 1.5rem;
@@ -311,7 +394,7 @@
     z-index: 1;
 }
 
-#note-modal button[type="button"]::before {
+#note-modal button[type="button"]:not(.delete-item-btn)::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -321,7 +404,7 @@
     transition: transform 0.3s ease;
 }
 
-#note-modal button[type="button"]:hover::before {
+#note-modal button[type="button"]:not(.delete-item-btn):hover::before {
     transform: scaleX(1);
 }
 

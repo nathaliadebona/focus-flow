@@ -85,7 +85,17 @@
                     <label for="note-content">Content</label>
                     <textarea name="note-content" id="note-content" placeholder="Write your note here..."></textarea>
 
-                    <fieldset>
+                    <fieldset class="checklist-fieldset">
+                        <legend>Checklist</legend>
+                        <p id="checklist-error">Please fill in all required fields.</p>
+                        <div id="checklist-items">
+
+                        </div>
+                        <input type="text" id="checklist-item-input">
+                        <button type="button" id="checklist-item-btn"><span><i class="fa-solid fa-plus"></i> New Item</span></button>
+                    </fieldset>
+
+                    <fieldset class="tags-fieldset">
                         <legend>Tags</legend>
 
                         <input type="checkbox" id="tag-urgent">
