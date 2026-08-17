@@ -32,6 +32,19 @@
     --font-body: 'Inter', sans-serif;
 }
 
+body.dark-mode {
+    --color-bg: #1A2C30;
+    --color-secondary: #24383D;
+    --color-primary: #F3ECE0;
+    --color-primary-light: #D4DEE0;
+    --color-accent: #E8724C;
+    --color-accent-dark: #D1633C;
+    --color-text: #F3ECE0;
+    --color-text-secondary: #A8B5B8;
+    --color-border: #3D5158; 
+    --color-event-bg: #3D6470;
+}
+
 * {
     margin: 0;
     padding: 0;

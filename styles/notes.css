@@ -205,6 +205,7 @@
 
 #note-modal .checklist-fieldset legend {
     margin-bottom: 1rem;
+    color: var(--color-text);
 }
 
 #note-modal #checklist-items {
@@ -276,6 +277,7 @@
 
 #note-modal .tags-fieldset legend {
     margin-bottom: 1rem;
+    color: var(--color-text);
 }
 
 #note-modal .tags-fieldset input[type="checkbox"] {

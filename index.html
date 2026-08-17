@@ -29,9 +29,15 @@
 
 <body>
     <header>
-        <h1>Focus & Flow</h1>
+        <div class="header-text">
+            <h1>Focus & Flow</h1>
+            <p>Your personal productivity space</p>
+        </div>
 
-        <p>Your personal productivity space</p>
+        <div class="theme-toggle">
+            <button type="button" id="light-mode-btn" title="Light mode"><i class="fa-solid fa-sun"></i></button>
+            <button type="button" id="dark-mode-btn" title="Dark mode"><i class="fa-solid fa-moon"></i></button>
+        </div>
     </header>
 
     <main>
@@ -191,6 +197,7 @@
         <p>Made with <i class="fa-solid fa-heart"></i> by Nathalia</p>
     </footer>
 
+    <script src="scripts/theme.js"></script>
     <script src="scripts/notes.js"></script>
     <script src="scripts/calendar.js"></script>
     <script src="scripts/dashboard.js"></script>
