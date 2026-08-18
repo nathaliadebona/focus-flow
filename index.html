@@ -160,7 +160,10 @@
         </section>
 
         <section id="calendar">
-            <h2>Calendar</h2>
+            <div class="calendar-toolbar">
+                <h2>Calendar</h2>
+                <button id="trash-events-btn" type="button"><i class="fa-solid fa-trash-can"></i></button>
+            </div>
 
             <nav>
                 <button id="prev-month" type="button" aria-label="Previous month"><i class="fa-solid fa-angle-left"></i></button>
@@ -210,6 +213,12 @@
                     <button type="button" id="delete-event-btn"><span>Delete Event</span></button>
                     <button type="button" id="cancel-event-btn"><span>Cancel</span></button>
                 </form>
+            </dialog>
+
+            <dialog id="trash-events-modal">
+                <h3 id="trash-events-modal-title">Trash</h3>
+                <ul id="trash-events-list"></ul>
+                <button type="button" id="close-trash-events-btn">Close</button>
             </dialog>
         </section>
 

@@ -9,6 +9,10 @@ const nextMonthBtn = document.getElementById("next-month");
 const eventForm = document.getElementById("event-form");
 const deleteEventBtn = document.getElementById("delete-event-btn");
 const eventAttachmentInput = document.getElementById("event-attachment");
+const trashEventsBtn = document.getElementById('trash-events-btn');
+const trashEventsModal = document.getElementById('trash-events-modal');
+const trashEventsList = document.getElementById('trash-events-list');
+const closeTrashEventsBtn = document.getElementById('close-trash-events-btn');
 
 // Data/state variables
 const today = new Date();
@@ -16,6 +20,7 @@ let currentYear = today.getFullYear();
 let currentMonth = today.getMonth();
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 let events = JSON.parse(localStorage.getItem('events')) || [];
+let trashedEvents = JSON.parse(localStorage.getItem('trashedEvents')) || [];
 let selectedDay = null;
 let eventBeingEdited = null;
 let pendingAttachment = null;
@@ -139,6 +144,69 @@ function saveEvents() {
     }
 }
 
+function saveTrashedEvents() {
+    try {
+        localStorage.setItem('trashedEvents', JSON.stringify(trashedEvents));
+        return true;
+    } catch (error) {
+        alert("Unable to save. Your browser's storage may be full.");
+        return false;
+    }
+}
+
+function renderTrashEvents() {
+    trashEventsList.innerHTML = "";
+
+    trashedEvents.forEach(function(event, index) {
+        const trashItem = document.createElement('li');
+
+        const trashItemInfo = document.createElement('div');
+        trashItemInfo.classList.add('trash-item-info');
+
+        const trashItemTitle = document.createElement('h3');
+        trashItemTitle.textContent = event.title;
+        trashItemInfo.appendChild(trashItemTitle);
+
+        const trashItemDate = document.createElement('p');
+        trashItemDate.textContent = monthNames[event.month] + " " + event.day;
+        trashItemDate.classList.add('trash-item-date');
+        trashItemInfo.appendChild(trashItemDate);
+        trashItem.appendChild(trashItemInfo);
+
+        const trashContainer = document.createElement('div');
+        trashContainer.classList.add('trash-container');
+
+        const restoreBtn = document.createElement('button');
+        restoreBtn.textContent = "Restore";
+        restoreBtn.classList.add('restore-btn');
+        trashContainer.appendChild(restoreBtn);
+
+        const deleteForeverBtn = document.createElement('button');
+        deleteForeverBtn.textContent = "Delete Forever";
+        deleteForeverBtn.classList.add('delete-forever-btn');
+        trashContainer.appendChild(deleteForeverBtn);
+
+        trashItem.appendChild(trashContainer);
+        trashEventsList.appendChild(trashItem);
+
+        restoreBtn.addEventListener('click', function() {
+            const restoredEvent = trashedEvents[index];
+            events.push(restoredEvent);
+            trashedEvents.splice(index, 1);
+            saveEvents();
+            saveTrashedEvents();
+            renderCalendarDays();
+            renderTrashEvents();
+        });
+
+        deleteForeverBtn.addEventListener('click', function() {
+            trashedEvents.splice(index, 1);
+
+            saveTrashedEvents();
+            renderTrashEvents();
+        });
+    });
+}
 
 // Click events (addEventListener)
 cancelEventBtn.addEventListener('click', function() {
@@ -215,10 +283,13 @@ eventForm.addEventListener('submit', function(event) {
 
 deleteEventBtn.addEventListener('click', function() {
     if (eventBeingEdited !== null) {
+        const deletedEvent = events[eventBeingEdited];
+        trashedEvents.push(deletedEvent);
         events.splice(eventBeingEdited, 1);
         eventBeingEdited = null;
 
         saveEvents();
+        saveTrashedEvents();
         renderCalendarDays();
         updateDashboard();
         eventForm.reset();
@@ -240,5 +311,13 @@ eventAttachmentInput.addEventListener('change', function() {
     }
 
     attachmentReader.readAsDataURL(attachment);
+});
 
-})
+trashEventsBtn.addEventListener('click', function() {
+    renderTrashEvents();
+    trashEventsModal.showModal();
+});
+
+closeTrashEventsBtn.addEventListener('click', function() {
+    trashEventsModal.close();
+});
