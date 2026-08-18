@@ -5,11 +5,13 @@
 #dashboard h2 {
     font-size: 1.6rem;
     color: var(--color-primary);
+    text-align: center;
 }
 
 .dashboard-greeting {
     font-size: 1rem;
     margin-bottom: 1.5rem;
+    text-align: center;
 }
 
 .summary-cards {

@@ -5,6 +5,7 @@
 #notes h2 {
     font-size: 1.6rem;
     color: var(--color-primary);
+    text-align: center;
 }
 
 #new-note-btn {
@@ -172,6 +173,7 @@
 }
 
 #trash-modal-title {
+    text-align: center;
     color: var(--color-primary);
 }
 
