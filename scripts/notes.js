@@ -18,9 +18,14 @@ const filterUrgent = document.getElementById('filter-urgent');
 const filterInProgress = document.getElementById('filter-in-progress');
 const filterDone = document.getElementById('filter-done');
 const filterToDo = document.getElementById('filter-todo');
+const trashBtn = document.getElementById('trash-btn');
+const trashModal = document.getElementById('trash-modal');
+const trashList = document.getElementById('trash-list');
+const closeTrashBtn = document.getElementById('close-trash-btn');  
 const filterCheckboxes = [filterUrgent, filterInProgress, filterDone, filterToDo];
 let noteBeingEdited = null;
 let notes = JSON.parse(localStorage.getItem('notes')) || [];
+let trashedNotes = JSON.parse(localStorage.getItem('trashedNotes')) || [];
 let pendingNoteAttachment = null;
 let pendingNoteChecklist = [];
 
@@ -103,8 +108,11 @@ function renderNotes(notesToRender) {
         deleteBtn.classList.add('delete-btn');
         noteItem.appendChild(deleteBtn);
         deleteBtn.addEventListener('click', function() {
+            const deletedNote = notes[realIndex];
+            trashedNotes.push(deletedNote);
             notes.splice(realIndex, 1);
             saveNotes();
+            saveTrashedNotes();
             renderNotes(getFilteredNotes());
             updateDashboard();
         });
@@ -194,6 +202,61 @@ function getFilteredNotes() {
     });
 
     return filteredNotes;
+}
+
+function saveTrashedNotes() {
+    try {
+        localStorage.setItem('trashedNotes', JSON.stringify(trashedNotes));
+        return true;
+    } catch (error) {
+        alert("Unable to save. Your browser's storage may be full.");
+        return false;
+    }
+}
+
+function renderTrash() {
+    trashList.innerHTML = '';
+
+    trashedNotes.forEach(function(note, index) {
+        const trashContainer = document.createElement('div');
+        trashContainer.classList.add('trash-container');
+
+        const trashItem = document.createElement('li');
+
+        const trashItemTitle = document.createElement('h3');
+        trashItemTitle.textContent = note.title;
+        trashItem.appendChild(trashItemTitle);
+
+        const restoreBtn = document.createElement('button');
+        restoreBtn.textContent = "Restore";
+        restoreBtn.classList.add('restore-btn');
+        trashContainer.appendChild(restoreBtn);
+
+        const deleteForeverBtn = document.createElement('button');
+        deleteForeverBtn.textContent = "Delete Forever";
+        deleteForeverBtn.classList.add('delete-forever-btn');
+        trashContainer.appendChild(deleteForeverBtn);
+
+        restoreBtn.addEventListener('click', function() {
+            const restoredNote = trashedNotes[index];
+            notes.push(restoredNote);
+            trashedNotes.splice(index, 1);
+            saveNotes();
+            saveTrashedNotes();
+            renderNotes(getFilteredNotes());
+            renderTrash();
+        });
+
+        deleteForeverBtn.addEventListener('click', function() {
+            trashedNotes.splice(index, 1);
+
+            saveTrashedNotes();
+            renderTrash();
+        });
+
+        trashItem.appendChild(trashContainer);
+        trashList.appendChild(trashItem);
+    });
 }
 
 openNoteModal.addEventListener('click', function() {
@@ -328,3 +391,12 @@ document.addEventListener('click', function(event) {
 searchNotesInput.addEventListener('input', function() {
     renderNotes(getFilteredNotes());
 });
+
+trashBtn.addEventListener('click', function() {
+    renderTrash();
+    trashModal.showModal();
+});
+
+closeTrashBtn.addEventListener('click', function() {
+    trashModal.close();
+})

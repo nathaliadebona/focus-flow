@@ -98,6 +98,8 @@
                         <input type="checkbox" id="filter-todo">
                         <label for="filter-todo" class="tag-label">To Do</label>
                     </div>
+
+                    <button id="trash-btn" type="button"><i class="fa-solid fa-trash-can"></i></button>
                 </div>
             </div>
 
@@ -148,6 +150,12 @@
                     <button type="submit"><span>Save Note</span></button>
                     <button id="cancel-note-btn" type="button"><span>Cancel</span></button>
                 </form>
+            </dialog>
+
+            <dialog id="trash-modal">
+                <h3 id="trash-modal-title">Trash</h3>
+                <ul id="trash-list"></ul>
+                <button type="button" id="close-trash-btn">Close</button>
             </dialog>
         </section>
 
