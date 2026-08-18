@@ -317,6 +317,11 @@
     color: var(--color-text-secondary);
 }
 
+#notes-list .note-updated-at {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+}
+
 #notes-list button {
     margin-right: 0.5rem;
     padding: 10px 18px;

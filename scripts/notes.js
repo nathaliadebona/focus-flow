@@ -103,6 +103,13 @@ function renderNotes(notesToRender) {
             noteItem.appendChild(checklistProgress);
         }
 
+        if (note.updatedAt) {
+        const noteUpdatedAt = document.createElement('p');
+        noteUpdatedAt.classList.add('note-updated-at');
+        noteUpdatedAt.textContent = monthNames[new Date(note.updatedAt).getMonth()] + " " + new Date(note.updatedAt).getDate() + ", " + new Date(note.updatedAt).getFullYear();
+        noteItem.appendChild(noteUpdatedAt);
+        }
+
         const deleteBtn = document.createElement('button');
         deleteBtn.textContent = "Delete";
         deleteBtn.classList.add('delete-btn');
@@ -315,9 +322,10 @@ noteForm.addEventListener('submit', function(event) {
         notes[noteBeingEdited].attachment = pendingNoteAttachment;
         notes[noteBeingEdited].tags = tags;
         notes[noteBeingEdited].checklist = pendingNoteChecklist;
+        notes[noteBeingEdited].updatedAt = new Date();
         noteBeingEdited = null;
     } else {
-        notes.push({ title: title, content: content, attachment: pendingNoteAttachment, tags: tags, checklist: pendingNoteChecklist });
+        notes.push({ title: title, content: content, attachment: pendingNoteAttachment, tags: tags, checklist: pendingNoteChecklist, updatedAt: new Date() });
     }
 
     saveNotes();
