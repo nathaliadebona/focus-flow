@@ -72,13 +72,7 @@ function renderCalendarDays() {
             selectedDay = day;
 
             if (eventIndex !== -1) {
-                eventBeingEdited = eventIndex;
-
-                document.getElementById("event-title").value = events[eventIndex].title;
-                document.getElementById("event-time").value = events[eventIndex].time;
-                document.getElementById("event-notes").value = events[eventIndex].notes;
-                document.getElementById("event-modal-title").textContent = "Edit Event";
-                renderAttachmentPreview(events[eventIndex].attachment, "attachment-preview");
+                openEditEventModal(events[eventIndex]);
             } else {
                 eventBeingEdited = null;
                 renderAttachmentPreview(null, "attachment-preview");
@@ -86,7 +80,6 @@ function renderCalendarDays() {
             }
 
             eventError.style.display = 'none';
-
             eventModal.showModal();
         });
 
@@ -206,6 +199,18 @@ function renderTrashEvents() {
             renderTrashEvents();
         });
     });
+}
+
+function openEditEventModal(event) {
+    const realIndex = events.indexOf(event);
+    eventBeingEdited = realIndex;
+    document.getElementById("event-title").value = events[realIndex].title;
+    document.getElementById("event-time").value = events[realIndex].time;
+    document.getElementById("event-notes").value = events[realIndex].notes;
+    document.getElementById("event-modal-title").textContent = "Edit Event";
+    renderAttachmentPreview(events[realIndex].attachment, "attachment-preview");
+    eventError.style.display = 'none';
+    eventModal.showModal();
 }
 
 // Click events (addEventListener)

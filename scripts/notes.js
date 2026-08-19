@@ -133,18 +133,7 @@ function renderNotes(notesToRender) {
         editBtn.classList.add('edit-btn');
         noteItem.appendChild(editBtn);
         editBtn.addEventListener('click', function() {
-            noteError.style.display = 'none';
-            document.getElementById("note-title").value = note.title;
-            document.getElementById("note-content").value = note.content;
-            document.getElementById("tag-urgent").checked = note.tags.includes("Urgent");
-            document.getElementById("tag-in-progress").checked = note.tags.includes("In Progress");
-            document.getElementById("tag-done").checked = note.tags.includes("Done");
-            document.getElementById("tag-todo").checked = note.tags.includes("To Do");
-            noteBeingEdited = realIndex;
-            renderAttachmentPreview(note.attachment, "note-attachment-preview");
-            pendingNoteChecklist = note.checklist || [];
-            renderChecklistItems();
-            noteModal.showModal();
+        openEditNoteModal(note);
         }); 
 
         noteList.appendChild(noteItem);
@@ -300,6 +289,23 @@ function renderTrash() {
         trashItem.appendChild(trashContainer);
         trashList.appendChild(trashItem);
     });
+}
+
+function openEditNoteModal(note) {
+    const realIndex = notes.indexOf(note);
+    noteError.style.display = 'none';
+    document.getElementById("note-title").value = note.title;
+    document.getElementById("note-content").value = note.content;
+    document.getElementById("tag-urgent").checked = note.tags.includes("Urgent");
+    document.getElementById("tag-in-progress").checked = note.tags.includes("In Progress");
+    document.getElementById("tag-done").checked = note.tags.includes("Done");
+    document.getElementById("tag-todo").checked = note.tags.includes("To Do");
+
+    noteBeingEdited = realIndex;
+    renderAttachmentPreview(note.attachment, "note-attachment-preview");
+    pendingNoteChecklist = note.checklist || [];
+    renderChecklistItems();
+    noteModal.showModal();
 }
 
 openNoteModal.addEventListener('click', function() {
