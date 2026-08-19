@@ -208,6 +208,28 @@ function getFilteredNotes() {
         return matchesSearch && matchesTags;
     });
 
+    filteredNotes.sort(function(a, b) {
+        if (a.tags.includes("Done") && !b.tags.includes("Done")) {
+            return 1;
+        }
+
+        if (!a.tags.includes("Done") && b.tags.includes("Done")) {
+            return -1;
+        }
+
+        if (!a.updatedAt && b.updatedAt) {
+            return 1;
+        }
+
+        if (a.updatedAt && !b.updatedAt) {
+            return -1;
+        }
+
+        const dateA = new Date(a.updatedAt);
+        const dateB = new Date(b.updatedAt);
+        return dateB - dateA;
+    });
+
     return filteredNotes;
 }
 
