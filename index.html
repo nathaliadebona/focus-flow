@@ -47,19 +47,19 @@
             <p class="dashboard-greeting">Welcome back!</p>
 
             <div class="summary-cards">
-                <article class="summary-card">
+                <article id="pending-tasks-card" class="summary-card">
                     <i class="fa-solid fa-list-check"></i>
                     <h3>Pending Tasks</h3>
                     <p>You have <span id="pending-count">0</span> tasks to complete</p>
                 </article>
 
-                <article class="summary-card">
+                <article id="completed-tasks-card" class="summary-card">
                     <i class="fa-solid fa-circle-check"></i>
                     <h3>Completed Tasks</h3>
                     <p><span id="completed-count">0</span> tasks done</p>
                 </article>
 
-                <article class="summary-card">
+                <article id="notes-summary-card" class="summary-card">
                     <i class="fa-solid fa-note-sticky"></i>
                     <h3>Notes</h3>
                     <p><span id="notes-count">0</span> notes saved</p>
@@ -71,6 +71,12 @@
                     <p id="upcoming-event">No upcoming events</p>
                 </article>
             </div>
+
+            <dialog id="dashboard-detail-modal">
+                <h3 id="dashboard-modal-title"></h3>
+                <ul id="dashboard-list"></ul>
+                <button type="button" id="close-dashboard-modal-btn">Close</button>
+            </dialog>
         </section>
 
         <section id="notes">
