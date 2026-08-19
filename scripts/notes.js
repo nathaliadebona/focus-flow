@@ -22,12 +22,14 @@ const trashBtn = document.getElementById('trash-btn');
 const trashModal = document.getElementById('trash-modal');
 const trashList = document.getElementById('trash-list');
 const closeTrashBtn = document.getElementById('close-trash-btn');  
+const showMoreNotesBtn = document.getElementById('show-more-notes-btn');
 const filterCheckboxes = [filterUrgent, filterInProgress, filterDone, filterToDo];
 let noteBeingEdited = null;
 let notes = JSON.parse(localStorage.getItem('notes')) || [];
 let trashedNotes = JSON.parse(localStorage.getItem('trashedNotes')) || [];
 let pendingNoteAttachment = null;
 let pendingNoteChecklist = [];
+let visibleNotesCount = 5;
 
 function saveNotes() {
     try {
@@ -42,13 +44,15 @@ function saveNotes() {
 function renderNotes(notesToRender) {
     noteList.innerHTML = '';
 
+    const notesToShow = notesToRender.slice(0, visibleNotesCount);
+
     if (notesToRender.length === 0) {
         emptyState.style.display = 'block';
     } else {
         emptyState.style.display = 'none';
     }
 
-    notesToRender.forEach(function(note, index) {
+    notesToShow.forEach(function(note, index) {
         const realIndex = notes.indexOf(note);
         const noteItem = document.createElement('li');
 
@@ -145,6 +149,16 @@ function renderNotes(notesToRender) {
 
         noteList.appendChild(noteItem);
     });
+
+    if (notesToRender.length > visibleNotesCount) {
+        showMoreNotesBtn.style.display = 'block';
+        showMoreNotesBtn.textContent = 'Show more';
+    } else if (visibleNotesCount > 5) {
+        showMoreNotesBtn.style.display = 'block';
+        showMoreNotesBtn.textContent = 'Show less';
+    } else {
+        showMoreNotesBtn.style.display = 'none';
+    }
 }
 
 function renderChecklistItems () {
@@ -430,3 +444,13 @@ trashBtn.addEventListener('click', function() {
 closeTrashBtn.addEventListener('click', function() {
     trashModal.close();
 })
+
+showMoreNotesBtn.addEventListener('click', function() {
+    if (showMoreNotesBtn.textContent === "Show less") {
+        visibleNotesCount = 5;
+    } else {
+        visibleNotesCount = visibleNotesCount + 5;
+    }
+
+    renderNotes(getFilteredNotes());
+});
