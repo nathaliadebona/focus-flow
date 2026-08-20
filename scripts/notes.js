@@ -181,6 +181,24 @@ function renderChecklistItems () {
         const labelCheckbox = document.createElement('label');
         labelCheckbox.textContent = item.text;
 
+        labelCheckbox.addEventListener('click', function() {
+            const editInput = document.createElement('input');
+            editInput.value = item.text;
+            labelCheckbox.replaceWith(editInput);
+
+            editInput.addEventListener('blur', function() {
+                item.text = editInput.value;
+                renderChecklistItems();
+            });
+
+            editInput.addEventListener('keydown', function(event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    editInput.blur();
+                }
+            });
+        });
+
         const deleteItemBtn = document.createElement('button');
         deleteItemBtn.type = "button";
         deleteItemBtn.classList.add('delete-item-btn');
