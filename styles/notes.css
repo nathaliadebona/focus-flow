@@ -446,6 +446,8 @@ input:checked + .tag-todo {
     border-radius: 8px;
     font-family: var(--font-body);
     font-size: 0.95rem;
+    background-color: var(--color-secondary);
+    color: var(--color-text);
 }
 
 #note-modal textarea {
