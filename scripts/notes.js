@@ -107,11 +107,24 @@ function renderNotes(notesToRender) {
             noteItem.appendChild(checklistProgress);
         }
 
+        if (note.attachment) {
+            const noteAttachmentIndicator = document.createElement('p');
+            noteAttachmentIndicator.classList.add('note-attachment-indicator');
+            const paperClipIcon = document.createElement('i');
+            paperClipIcon.classList.add('fa-solid', 'fa-paperclip');
+            const noteAttachmentNumber = document.createElement('span');
+            noteAttachmentNumber.classList.add('note-attachment-number');
+            noteAttachmentNumber.textContent = "1";
+            noteAttachmentIndicator.appendChild(paperClipIcon);
+            noteAttachmentIndicator.appendChild(noteAttachmentNumber);
+            noteItem.appendChild(noteAttachmentIndicator);
+        }
+
         if (note.updatedAt) {
-        const noteUpdatedAt = document.createElement('p');
-        noteUpdatedAt.classList.add('note-updated-at');
-        noteUpdatedAt.textContent = monthNames[new Date(note.updatedAt).getMonth()] + " " + new Date(note.updatedAt).getDate() + ", " + new Date(note.updatedAt).getFullYear();
-        noteItem.appendChild(noteUpdatedAt);
+            const noteUpdatedAt = document.createElement('p');
+            noteUpdatedAt.classList.add('note-updated-at');
+            noteUpdatedAt.textContent = monthNames[new Date(note.updatedAt).getMonth()] + " " + new Date(note.updatedAt).getDate() + ", " + new Date(note.updatedAt).getFullYear();
+            noteItem.appendChild(noteUpdatedAt);
         }
 
         const deleteBtn = document.createElement('button');
