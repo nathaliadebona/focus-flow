@@ -75,6 +75,7 @@
 
 #dashboard-list li {
     padding: 0.8rem;
+    color: var(--color-text);
     border-bottom: 1px solid var(--color-border);
     list-style: none;
     cursor: pointer;
