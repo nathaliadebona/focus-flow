@@ -174,6 +174,10 @@ function renderChecklistItems () {
         itemCheckbox.type = 'checkbox';
         itemCheckbox.checked = item.checked;
 
+        itemCheckbox.addEventListener('click', function() {
+            item.checked = !item.checked;
+        });
+
         const labelCheckbox = document.createElement('label');
         labelCheckbox.textContent = item.text;
 
