@@ -28,6 +28,15 @@
     --color-border: #E0DAD0;
     --color-event-bg: #D4DEE0;
 
+    --color-tag-urgent-bg: #FBE4E1;
+    --color-tag-urgent-text: #C0392B;
+    --color-tag-in-progress-bg: #FBF0D9;
+    --color-tag-in-progress-text: #E0A526;
+    --color-tag-done-bg: #E3EFE6;
+    --color-tag-done-text: #4C8C5C;
+    --color-tag-todo-bg: #EAE6F0;
+    --color-tag-todo-text: #6C5B8C;
+
     --font-heading: 'Poppins', sans-serif;
     --font-body: 'Inter', sans-serif;
 }

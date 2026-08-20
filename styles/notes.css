@@ -277,23 +277,44 @@
 }
 
 .tag-urgent {
-    background-color: #FBE4E1;
-    color: #C0392B;
+    background-color: var(--color-tag-urgent-bg);
+    color: var(--color-tag-urgent-text);
 }
 
+input:checked + .tag-urgent {
+    background-color: var(--color-tag-urgent-text);
+    color: var(--color-tag-urgent-bg);
+}
+
+
 .tag-in-progress {
-    background-color: #FBF0D9;
-    color: #E0A526;
+    background-color: var(--color-tag-in-progress-bg);
+    color: var(--color-tag-in-progress-text);
+}
+
+input:checked + .tag-in-progress {
+    background-color: var(--color-tag-in-progress-text);
+    color: var(--color-tag-in-progress-bg);
 }
 
 .tag-done {
-    background-color: #E3EFE6;
-    color: #4C8C5C;
+    background-color: var(--color-tag-done-bg);
+    color: var(--color-tag-done-text);
+}
+
+input:checked + .tag-done {
+    background-color: var(--color-tag-done-text);
+    color: var(--color-tag-done-bg);
 }
 
 .tag-todo {
-    background-color: #EAE6F0;
-    color: #6C5B8C;
+    background-color: var(--color-tag-todo-bg);
+    color: var(--color-tag-todo-text);
+}
+
+input:checked + .tag-todo {
+    background-color: var(--color-tag-todo-text);
+    color: var(--color-tag-todo-bg);
 }
 
 #notes-list h3 {
@@ -412,7 +433,7 @@
     gap: 1rem;
 }
 
-#note-modal label {
+#note-modal label:not(.tag-label) {
     font-size: 1.1rem;
     font-weight: 500;
     color: var(--color-text);
@@ -527,46 +548,6 @@
     border-radius: 999px;
     cursor: pointer;
     font-size: 0.85rem;
-}
-
-#note-modal label[for="tag-urgent"] {
-    background-color: #FBE4E1;
-    color: #C0392B;
-}
-
-#note-modal input[id="tag-urgent"]:checked + label {
-    background-color: #C0392B;
-    color: #FBE4E1;
-}
-
-#note-modal label[for="tag-in-progress"] {
-    background-color: #FBF0D9;
-    color: #E0A526;
-}
-
-#note-modal input[id="tag-in-progress"]:checked + label {
-    background-color: #E0A526;
-    color: #FBF0D9;
-}
-
-#note-modal label[for="tag-done"] {
-    background-color: #E3EFE6;
-    color: #4C8C5C;
-}
-
-#note-modal input[id="tag-done"]:checked + label {
-    background-color: #4C8C5C;
-    color: #E3EFE6;
-}
-
-#note-modal label[for="tag-todo"] {
-    background-color: #EAE6F0;
-    color: #6C5B8C;
-}
-
-#note-modal input[id="tag-todo"]:checked + label {
-    background-color: #6C5B8C;
-    color: #EAE6F0;
 }
 
 #note-attachment-preview img {
