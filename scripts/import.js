@@ -2,6 +2,27 @@
 
 const importFileInput = document.getElementById("import-file");
 
+function parseCSVLine(line) {
+    const fields = [];
+    let currentField = "";
+    let insideQuotes = false;
+
+    for (let i = 0; i < line.length; i++) {
+        const currentChar = line[i];
+
+        if (currentChar === '"') {
+            insideQuotes = !insideQuotes;
+        } else if (currentChar === ',' && !insideQuotes) {
+            fields.push(currentField);
+            currentField = "";
+        } else {
+            currentField = currentField + currentChar;
+        }
+    }
+    fields.push(currentField);
+    return fields;
+}
+
 importFileInput.addEventListener('change', function() {
     const file = importFileInput.files[0];
 
@@ -73,14 +94,14 @@ importFileInput.addEventListener('change', function() {
 
         if (file.name.endsWith('.csv')) {
             const lines = fileContent.split("\n");
-            const headers = lines[0].split(",");
+            const headers = parseCSVLine(lines[0]);
 
             for (let i = 1; i < lines.length; i++) {
                 if (lines[i].trim() === "") {
                     continue;
                 }
 
-                const values = lines[i].split(",");
+                const values = parseCSVLine(lines[i]);
                 const record = {};
 
                 headers.forEach(function(header, index) {
@@ -97,7 +118,7 @@ importFileInput.addEventListener('change', function() {
                     });
 
                     if (!alreadyExists) {
-                        notes.push({ title: record.title, content: record.content });
+                        notes.push({ title: record.title, content: record.content, attachment: null, tags: [], checklist: [], updatedAt: new Date() });
                     }
 
                 } else if (record.type === "event") {
@@ -140,7 +161,7 @@ importFileInput.addEventListener('change', function() {
         }
 
         const notesSaved = saveNotes();
-        renderNotes();
+        renderNotes(getFilteredNotes());
         const eventsSaved = saveEvents();
         renderCalendarDays();
         updateDashboard();
