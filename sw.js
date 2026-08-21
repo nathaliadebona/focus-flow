@@ -1,4 +1,4 @@
-const CACHE_NAME = 'focus-flow-v73';
+const CACHE_NAME = 'focus-flow-v77';
 
 const filesToCache = [
     'index.html',
@@ -15,6 +15,7 @@ const filesToCache = [
     'scripts/main.js',
     'scripts/notes.js',
     'scripts/theme.js',
+    'scripts/utils.js',
     'manifest.json',
     'assets/icons/icon-192.png',
     'assets/icons/icon-512.png',

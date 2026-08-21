@@ -23,7 +23,7 @@ let events = JSON.parse(localStorage.getItem('events')) || [];
 let trashedEvents = JSON.parse(localStorage.getItem('trashedEvents')) || [];
 let selectedDay = null;
 let eventBeingEdited = null;
-let pendingAttachment = null;
+let pendingAttachments = [];
 
 // Functions
 function renderCalendarHeader() {
@@ -75,7 +75,7 @@ function renderCalendarDays() {
                 openEditEventModal(events[eventIndex]);
             } else {
                 eventBeingEdited = null;
-                renderAttachmentPreview(null, "attachment-preview");
+                renderAttachmentsPreview([], "attachment-preview");
                 document.getElementById("event-modal-title").textContent = "Add Event";
             }
 
@@ -95,35 +95,6 @@ function renderCalendarDays() {
 
     if (row.children.length > 0) {
         calendarGrid.appendChild(row);
-    }
-}
-
-function renderAttachmentPreview(attachmentData, previewElementId) {
-    const preview = document.getElementById(previewElementId);
-    preview.innerHTML = '';
-
-    if (!attachmentData) {
-        return;
-    }
-
-    if (attachmentData.startsWith("data:image")) {
-        const img = document.createElement('img');
-        img.src = attachmentData;
-        preview.appendChild(img); 
-    } else {
-        const link = document.createElement('a');
-        link.href = attachmentData;
-        const linkIcon = document.createElement('span');
-        linkIcon.classList.add('download-icon');
-        const downloadIcon = document.createElement('i');
-        downloadIcon.classList.add('fa-solid', 'fa-download');
-        linkIcon.appendChild(downloadIcon);
-        link.appendChild(linkIcon);
-        const linkText = document.createElement('span');
-        linkText.textContent = "Download attachment";
-        link.appendChild(linkText);
-        link.setAttribute('download', 'attachment');
-        preview.appendChild(link);
     }
 }
 
@@ -208,7 +179,7 @@ function openEditEventModal(event) {
     document.getElementById("event-time").value = events[realIndex].time;
     document.getElementById("event-notes").value = events[realIndex].notes;
     document.getElementById("event-modal-title").textContent = "Edit Event";
-    renderAttachmentPreview(events[realIndex].attachment, "attachment-preview");
+    renderAttachmentsPreview(events[realIndex].attachments, "attachment-preview");
     eventError.style.display = 'none';
     eventModal.showModal();
 }
@@ -220,7 +191,7 @@ cancelEventBtn.addEventListener('click', function() {
     eventForm.reset();
     document.getElementById("event-modal-title").textContent = "Add Event";
     eventModal.close();
-    pendingAttachment = null;
+    pendingAttachments = [];
 });
 
 prevMonthBtn.addEventListener('click', function() {
@@ -263,7 +234,7 @@ eventForm.addEventListener('submit', function(event) {
         events[eventBeingEdited].title = title;
         events[eventBeingEdited].time = time;
         events[eventBeingEdited].notes = eventNotesValue;
-        events[eventBeingEdited].attachment = pendingAttachment;
+        events[eventBeingEdited].attachments = pendingAttachments;
         eventBeingEdited = null;
     } else {
         events.push({
@@ -273,7 +244,7 @@ eventForm.addEventListener('submit', function(event) {
             title: title,
             time: time,
             notes: eventNotesValue,
-            attachment: pendingAttachment
+            attachments: pendingAttachments
         });
     }
 
@@ -283,7 +254,7 @@ eventForm.addEventListener('submit', function(event) {
 
     eventForm.reset();
     eventModal.close();
-    pendingAttachment = null;
+    pendingAttachments = [];
 });
 
 deleteEventBtn.addEventListener('click', function() {
@@ -303,19 +274,17 @@ deleteEventBtn.addEventListener('click', function() {
 });
 
 eventAttachmentInput.addEventListener('change', function() {
-    const attachment = eventAttachmentInput.files[0];
+    const files = eventAttachmentInput.files;
 
-    if (!attachment) {
-        return;
-    }
+    Array.from(files).forEach(function(file) {
+        const attachmentReader = new FileReader();
+        attachmentReader.onload = function(event) {
+            pendingAttachments.push({ name: file.name, data: event.target.result });
+            renderAttachmentsPreview(pendingAttachments, "attachment-preview");
+        }
 
-    const attachmentReader = new FileReader();
-
-    attachmentReader.onload = function(event) {
-        pendingAttachment = event.target.result;
-    }
-
-    attachmentReader.readAsDataURL(attachment);
+        attachmentReader.readAsDataURL(file);
+    });
 });
 
 trashEventsBtn.addEventListener('click', function() {

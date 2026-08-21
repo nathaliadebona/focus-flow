@@ -41,55 +41,6 @@ function saveNotes() {
     }
 }
 
-function renderNotesAttachmentsPreview(attachmentsList, previewElementId) {
-    const preview = document.getElementById(previewElementId);
-    preview.innerHTML = '';
-
-    if (!attachmentsList) {
-        return;
-    }
-
-    attachmentsList.forEach(function(attachmentData, index) {
-        const wrapper = document.createElement('div');
-        wrapper.classList.add('attachment-item');
-
-        if (attachmentData.data.startsWith("data:image")) {
-            const img = document.createElement('img');
-            img.src = attachmentData.data;
-            wrapper.appendChild(img);
-        } else {
-            const link = document.createElement('a');
-            link.href = attachmentData.data;
-            const linkIcon = document.createElement('span');
-            linkIcon.classList.add('download-icon');
-            const downloadIcon = document.createElement('i');
-            downloadIcon.classList.add('fa-solid', 'fa-download');
-            linkIcon.appendChild(downloadIcon);
-            link.appendChild(linkIcon);
-            const linkText = document.createElement('span');
-            linkText.textContent = attachmentData.name;
-            link.appendChild(linkText);
-            link.setAttribute('download', attachmentData.name);
-            wrapper.appendChild(link);
-        }
-
-        const removeBtn = document.createElement('button');
-        removeBtn.type = 'button';
-        removeBtn.classList.add('remove-attachment-btn');
-        const removeIcon = document.createElement('i');
-        removeIcon.classList.add('fa-solid', 'fa-xmark');
-        removeBtn.appendChild(removeIcon);
-
-        removeBtn.addEventListener('click', function() {
-            attachmentsList.splice(index, 1);
-            renderNotesAttachmentsPreview(attachmentsList, previewElementId);
-        });
-
-        wrapper.appendChild(removeBtn);
-        preview.appendChild(wrapper);
-    });
-}
-
 function renderNotes(notesToRender) {
     noteList.innerHTML = '';
 
@@ -386,7 +337,7 @@ function openEditNoteModal(note) {
     document.getElementById("tag-todo").checked = note.tags.includes("To Do");
 
     noteBeingEdited = realIndex;
-    renderNotesAttachmentsPreview(note.attachments, "note-attachment-preview");
+    renderAttachmentsPreview(note.attachments, "note-attachment-preview");
     pendingNoteChecklist = note.checklist || [];
     renderChecklistItems();
     noteModal.showModal();
@@ -398,7 +349,7 @@ openNoteModal.addEventListener('click', function() {
     document.getElementById("tag-in-progress").checked = false;
     document.getElementById("tag-done").checked = false;
     document.getElementById("tag-todo").checked = false;
-    renderNotesAttachmentsPreview([], "note-attachment-preview");
+    renderAttachmentsPreview([], "note-attachment-preview");
     pendingNoteChecklist = [];
     renderChecklistItems();
     noteModal.showModal();
@@ -470,7 +421,7 @@ noteAttachmentInput.addEventListener('change', function() {
         const attachmentReader = new FileReader();
         attachmentReader.onload = function(event) {
             pendingNoteAttachments.push({ name: file.name, data: event.target.result });
-            renderNotesAttachmentsPreview(pendingNoteAttachments, "note-attachment-preview");
+            renderAttachmentsPreview(pendingNoteAttachments, "note-attachment-preview");
         }
 
         attachmentReader.readAsDataURL(file);
