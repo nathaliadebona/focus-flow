@@ -118,7 +118,7 @@ importFileInput.addEventListener('change', function() {
                     });
 
                     if (!alreadyExists) {
-                        notes.push({ title: record.title, content: record.content, attachment: null, tags: [], checklist: [], updatedAt: new Date() });
+                        notes.push({ title: record.title, content: record.content, attachments: [], tags: [], checklist: [], updatedAt: new Date() });
                     }
 
                 } else if (record.type === "event") {
@@ -128,7 +128,8 @@ importFileInput.addEventListener('change', function() {
                         month: Number(record.month),
                         year: Number(record.year),
                         time: record.time,
-                        notes: record.notes || ""
+                        notes: record.notes || "",
+                        attachments: []
                     };
 
                     if (!newEvent.title || newEvent.title.trim() === "") {
