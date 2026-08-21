@@ -566,6 +566,23 @@ input:checked + .tag-todo {
     color: var(--color-text-secondary);
 }
 
+#note-attachment-preview .attachment-item {
+    display: flex;
+    gap: 0.5rem;
+}
+
+#note-attachment-preview .remove-attachment-btn {
+    margin-left: auto;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    color: var(--color-text-secondary);
+}
+
+#note-attachment-preview .remove-attachment-btn:hover {
+    color: #C0392B;
+}
+
 #note-modal input[type="file"] {
     font-size: 0.85rem;
     color: var(--color-text-secondary);

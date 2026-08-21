@@ -27,7 +27,7 @@ const filterCheckboxes = [filterUrgent, filterInProgress, filterDone, filterToDo
 let noteBeingEdited = null;
 let notes = JSON.parse(localStorage.getItem('notes')) || [];
 let trashedNotes = JSON.parse(localStorage.getItem('trashedNotes')) || [];
-let pendingNoteAttachment = null;
+let pendingNoteAttachments = [];
 let pendingNoteChecklist = [];
 let visibleNotesCount = 5;
 
@@ -39,6 +39,55 @@ function saveNotes() {
         alert("Unable to save. Your browser's storage may be full.");
         return false;
     }
+}
+
+function renderNotesAttachmentsPreview(attachmentsList, previewElementId) {
+    const preview = document.getElementById(previewElementId);
+    preview.innerHTML = '';
+
+    if (!attachmentsList) {
+        return;
+    }
+
+    attachmentsList.forEach(function(attachmentData, index) {
+        const wrapper = document.createElement('div');
+        wrapper.classList.add('attachment-item');
+
+        if (attachmentData.data.startsWith("data:image")) {
+            const img = document.createElement('img');
+            img.src = attachmentData.data;
+            wrapper.appendChild(img);
+        } else {
+            const link = document.createElement('a');
+            link.href = attachmentData.data;
+            const linkIcon = document.createElement('span');
+            linkIcon.classList.add('download-icon');
+            const downloadIcon = document.createElement('i');
+            downloadIcon.classList.add('fa-solid', 'fa-download');
+            linkIcon.appendChild(downloadIcon);
+            link.appendChild(linkIcon);
+            const linkText = document.createElement('span');
+            linkText.textContent = attachmentData.name;
+            link.appendChild(linkText);
+            link.setAttribute('download', attachmentData.name);
+            wrapper.appendChild(link);
+        }
+
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.classList.add('remove-attachment-btn');
+        const removeIcon = document.createElement('i');
+        removeIcon.classList.add('fa-solid', 'fa-xmark');
+        removeBtn.appendChild(removeIcon);
+
+        removeBtn.addEventListener('click', function() {
+            attachmentsList.splice(index, 1);
+            renderNotesAttachmentsPreview(attachmentsList, previewElementId);
+        });
+
+        wrapper.appendChild(removeBtn);
+        preview.appendChild(wrapper);
+    });
 }
 
 function renderNotes(notesToRender) {
@@ -107,14 +156,14 @@ function renderNotes(notesToRender) {
             noteItem.appendChild(checklistProgress);
         }
 
-        if (note.attachment) {
+        if (note.attachments && note.attachments.length > 0) {
             const noteAttachmentIndicator = document.createElement('p');
             noteAttachmentIndicator.classList.add('note-attachment-indicator');
             const paperClipIcon = document.createElement('i');
             paperClipIcon.classList.add('fa-solid', 'fa-paperclip');
             const noteAttachmentNumber = document.createElement('span');
             noteAttachmentNumber.classList.add('note-attachment-number');
-            noteAttachmentNumber.textContent = "1";
+            noteAttachmentNumber.textContent = note.attachments.length;
             noteAttachmentIndicator.appendChild(paperClipIcon);
             noteAttachmentIndicator.appendChild(noteAttachmentNumber);
             noteItem.appendChild(noteAttachmentIndicator);
@@ -337,7 +386,7 @@ function openEditNoteModal(note) {
     document.getElementById("tag-todo").checked = note.tags.includes("To Do");
 
     noteBeingEdited = realIndex;
-    renderAttachmentPreview(note.attachment, "note-attachment-preview");
+    renderNotesAttachmentsPreview(note.attachments, "note-attachment-preview");
     pendingNoteChecklist = note.checklist || [];
     renderChecklistItems();
     noteModal.showModal();
@@ -349,7 +398,7 @@ openNoteModal.addEventListener('click', function() {
     document.getElementById("tag-in-progress").checked = false;
     document.getElementById("tag-done").checked = false;
     document.getElementById("tag-todo").checked = false;
-    renderAttachmentPreview(null, "note-attachment-preview");
+    renderNotesAttachmentsPreview([], "note-attachment-preview");
     pendingNoteChecklist = [];
     renderChecklistItems();
     noteModal.showModal();
@@ -360,7 +409,7 @@ cancelNoteModal.addEventListener('click', function() {
     noteError.style.display = 'none';
     noteForm.reset();
     noteModal.close();
-    pendingNoteAttachment = null;
+    pendingNoteAttachments = [];
 });
 
 noteForm.addEventListener('submit', function(event) {
@@ -396,13 +445,13 @@ noteForm.addEventListener('submit', function(event) {
     if (noteBeingEdited !== null) {
         notes[noteBeingEdited].title = title;
         notes[noteBeingEdited].content = content;
-        notes[noteBeingEdited].attachment = pendingNoteAttachment;
+        notes[noteBeingEdited].attachments = pendingNoteAttachments;
         notes[noteBeingEdited].tags = tags;
         notes[noteBeingEdited].checklist = pendingNoteChecklist;
         notes[noteBeingEdited].updatedAt = new Date();
         noteBeingEdited = null;
     } else {
-        notes.push({ title: title, content: content, attachment: pendingNoteAttachment, tags: tags, checklist: pendingNoteChecklist, updatedAt: new Date() });
+        notes.push({ title: title, content: content, attachments: pendingNoteAttachments, tags: tags, checklist: pendingNoteChecklist, updatedAt: new Date() });
     }
 
     saveNotes();
@@ -411,23 +460,21 @@ noteForm.addEventListener('submit', function(event) {
 
     noteForm.reset();
     noteModal.close();
-    pendingNoteAttachment = null;
+    pendingNoteAttachments = [];
 });
 
 noteAttachmentInput.addEventListener('change', function() {
-    const attachment = noteAttachmentInput.files[0];
+    const files = noteAttachmentInput.files;
 
-    if (!attachment) {
-        return;
-    }
+    Array.from(files).forEach(function(file) {
+        const attachmentReader = new FileReader();
+        attachmentReader.onload = function(event) {
+            pendingNoteAttachments.push({ name: file.name, data: event.target.result });
+            renderNotesAttachmentsPreview(pendingNoteAttachments, "note-attachment-preview");
+        }
 
-    const attachmentReader = new FileReader();
-
-    attachmentReader.onload = function(event) {
-        pendingNoteAttachment = event.target.result;
-    }
-
-    attachmentReader.readAsDataURL(attachment);
+        attachmentReader.readAsDataURL(file);
+    });
 });
 
 checklistBtn.addEventListener('click', function() {
