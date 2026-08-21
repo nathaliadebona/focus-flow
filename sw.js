@@ -1,4 +1,4 @@
-const CACHE_NAME = 'focus-flow-v64';
+const CACHE_NAME = 'focus-flow-v65';
 
 const filesToCache = [
     'index.html',
@@ -19,6 +19,17 @@ const filesToCache = [
     'assets/icons/icon-192.png',
     'assets/icons/icon-512.png',
     'assets/icons/apple-touch-icon.png',
+    'assets/splash/apple-splash-750-1334.png',
+    'assets/splash/apple-splash-1242-2208.png',
+    'assets/splash/apple-splash-1125-2436.png',
+    'assets/splash/apple-splash-828-1792.png',
+    'assets/splash/apple-splash-1242-2688.png',
+    'assets/splash/apple-splash-1170-2532.png',
+    'assets/splash/apple-splash-1284-2778.png',
+    'assets/splash/apple-splash-1179-2556.png',
+    'assets/splash/apple-splash-1290-2796.png',
+    'assets/splash/apple-splash-1206-2622.png',
+    'assets/splash/apple-splash-1320-2868.png',
     'fonts/inter-regular.woff2',
     'fonts/inter-medium.woff2',
     'fonts/poppins-bold.woff2'
