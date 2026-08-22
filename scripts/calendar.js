@@ -69,7 +69,7 @@ function renderCalendarDays() {
 
             const eventTitle = document.createElement('div');
             eventTitle.classList.add('event-label');
-            eventTitle.textContent = dayEvents.length + " eventos";
+            eventTitle.textContent = dayEvents.length + " events";
             cell.appendChild(eventTitle);
         }
 
