@@ -23,10 +23,14 @@ const trashModal = document.getElementById('trash-modal');
 const trashList = document.getElementById('trash-list');
 const closeTrashBtn = document.getElementById('close-trash-btn');  
 const showMoreNotesBtn = document.getElementById('show-more-notes-btn');
+const addTagBtn = document.getElementById('add-tag-btn');
+const addTagForm = document.getElementById('add-tag-form');
+const addTagConfirmBtn = document.getElementById('add-tag-confirm-btn');
 const filterCheckboxes = [filterUrgent, filterInProgress, filterDone, filterToDo];
 let noteBeingEdited = null;
 let notes = JSON.parse(localStorage.getItem('notes')) || [];
 let trashedNotes = JSON.parse(localStorage.getItem('trashedNotes')) || [];
+let customTags = JSON.parse(localStorage.getItem('customTags')) || [];
 let pendingNoteAttachments = [];
 let pendingNoteChecklist = [];
 let visibleNotesCount = 5;
@@ -34,6 +38,16 @@ let visibleNotesCount = 5;
 function saveNotes() {
     try {
         localStorage.setItem('notes', JSON.stringify(notes));
+        return true;
+    } catch (error) {
+        alert("Unable to save. Your browser's storage may be full.");
+        return false;
+    }
+}
+
+function saveCustomTags() {
+    try {
+        localStorage.setItem('customTags', JSON.stringify(customTags));
         return true;
     } catch (error) {
         alert("Unable to save. Your browser's storage may be full.");
@@ -83,6 +97,14 @@ function renderNotes(notesToRender) {
 
             if (tag === "To Do") {
                 tagSpan.classList.add('tag-todo');
+            } 
+
+            const customTagData = customTags.find(function(customTag) {
+                return customTag.name === tag;
+            });
+
+            if (customTagData) {
+                tagSpan.style.backgroundColor = customTagData.color;
             }
 
             noteHeader.appendChild(tagSpan);
@@ -219,6 +241,52 @@ function renderChecklistItems () {
     });
 }
 
+function renderCustomTags(selectedTags) {
+    const container = document.getElementById('custom-tags-container');
+    container.innerHTML = '';
+
+    customTags.forEach(function(tag, index) {
+        const customTagsInput = document.createElement('input');
+        customTagsInput.type = 'checkbox';
+        customTagsInput.id = "tag-" + tag.name
+        customTagsInput.checked = selectedTags.includes(tag.name);
+
+        const customTagsLabel = document.createElement('label');
+        customTagsLabel.htmlFor = "tag-" + tag.name;
+        customTagsLabel.classList.add('tag-label');
+        customTagsLabel.textContent = tag.name;
+        customTagsLabel.style.backgroundColor = tag.color;
+
+        container.appendChild(customTagsInput);
+        container.appendChild(customTagsLabel);
+    });
+}
+
+function renderFilterCustomTags() {
+    const filterCustomTagsContainer = document.getElementById('filter-custom-tags-container');
+    filterCustomTagsContainer.innerHTML = '';
+
+    customTags.forEach(function(tag) {
+        const filterCustomTagsInput = document.createElement('input');
+        filterCustomTagsInput.type = 'checkbox';
+        filterCustomTagsInput.id = "filter-tag-" + tag.name;
+
+        filterCustomTagsInput.addEventListener('change', function() {
+            filterPanel.style.display = "none";
+            renderNotes(getFilteredNotes());
+        });
+
+        const filterCustomTagsLabel = document.createElement('label');
+        filterCustomTagsLabel.htmlFor = "filter-tag-" + tag.name;
+        filterCustomTagsLabel.classList.add('tag-label');
+        filterCustomTagsLabel.textContent = tag.name;
+        filterCustomTagsLabel.style.backgroundColor = tag.color;
+
+        filterCustomTagsContainer.appendChild(filterCustomTagsInput);
+        filterCustomTagsContainer.appendChild(filterCustomTagsLabel);
+    });
+}
+
 function getFilteredNotes() {
     const searchText = searchNotesInput.value;
 
@@ -239,6 +307,13 @@ function getFilteredNotes() {
     if (filterToDo.checked) {
         selectedFilterTags.push("To Do");
     }
+
+    customTags.forEach(function(tag) {
+        const filterCustomTags = document.getElementById("filter-tag-" + tag.name);
+        if (filterCustomTags.checked) {
+            selectedFilterTags.push(tag.name);
+        }
+    });
 
     const filteredNotes = notes.filter(function(note) {
         const matchesSearch = note.title.toLowerCase().includes(searchText.toLowerCase()) || note.content.toLowerCase().includes(searchText.toLowerCase());
@@ -340,6 +415,7 @@ function openEditNoteModal(note) {
     renderAttachmentsPreview(note.attachments, "note-attachment-preview");
     pendingNoteChecklist = note.checklist || [];
     renderChecklistItems();
+    renderCustomTags(note.tags);
     noteModal.showModal();
 }
 
@@ -352,6 +428,7 @@ openNoteModal.addEventListener('click', function() {
     renderAttachmentsPreview([], "note-attachment-preview");
     pendingNoteChecklist = [];
     renderChecklistItems();
+    renderCustomTags([]);
     noteModal.showModal();
 });
 
@@ -385,6 +462,12 @@ noteForm.addEventListener('submit', function(event) {
     if (document.getElementById("tag-todo").checked) {
         tags.push("To Do");
     }
+
+    customTags.forEach(function(tag) {
+        if (document.getElementById("tag-" + tag.name).checked) {
+            tags.push(tag.name)
+        }
+    });
 
     if (title.trim() === "") {
         noteError.style.display = 'block';
@@ -441,6 +524,49 @@ checklistBtn.addEventListener('click', function() {
     pendingNoteChecklist.push(newItem);
     renderChecklistItems();
     checklistItemInput.value = "";
+});
+
+addTagBtn.addEventListener('click', function() {
+    if (addTagForm.style.display === 'none' || addTagForm.style.display === '') {
+        addTagForm.style.display = 'flex';
+    } else {
+        addTagForm.style.display = 'none';
+    }
+});
+
+addTagConfirmBtn.addEventListener('click', function() {
+    const tagName = document.getElementById('add-tag-name').value.trim();
+    const tagColor = document.getElementById('add-tag-color').value;
+
+    if (tagName === "") {
+        const tagError = document.getElementById('add-tag-error');
+        tagError.style.display = "block";
+        return;
+    } 
+
+    if (customTags.some(function(tag) { return tag.name === tagName; })) {
+        const tagError = document.getElementById('add-tag-error');
+        tagError.style.display = "block";
+        return;
+    }
+
+    const fixedTags = ["Urgent", "In Progress", "Done", "To Do"];
+
+    if (fixedTags.includes(tagName)) {
+        const tagError = document.getElementById('add-tag-error');
+        tagError.style.display = "block";
+        return;
+    }
+
+    const newTag = { name: tagName, color: tagColor };
+    customTags.push(newTag);
+    saveCustomTags();
+    renderCustomTags([]);
+    renderFilterCustomTags();
+    document.getElementById('add-tag-name').value = "";
+    document.getElementById('add-tag-color').value = "#000000";
+    document.getElementById('add-tag-error').style.display = "none";
+    addTagForm.style.display = "none";
 });
 
 checklistItemInput.addEventListener('keydown', function(event) {

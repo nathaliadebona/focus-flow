@@ -3,6 +3,7 @@
 // variables and functions. Order matters here (calendar before dashboard,
 // since updateDashboard reads from both `notes` and `events`).
 
+renderFilterCustomTags();
 renderNotes(getFilteredNotes());
 renderCalendarHeader();
 renderCalendarDays();

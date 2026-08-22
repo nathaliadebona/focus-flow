@@ -115,6 +115,8 @@
 
                         <input type="checkbox" id="filter-todo">
                         <label for="filter-todo" class="tag-label tag-todo">To Do</label>
+                    
+                        <div id="filter-custom-tags-container"></div>
                     </div>
 
                     <button id="trash-btn" type="button"><i class="fa-solid fa-trash-can"></i></button>
@@ -160,6 +162,20 @@
                         
                         <input type="checkbox" id="tag-todo">
                         <label for="tag-todo" class="tag-label tag-todo">To Do</label>
+                    
+                        <div id="custom-tags-container"></div>
+
+                        <button type="button" id="add-tag-btn"><span><i class="fa-solid fa-plus"></i></span></button>
+
+                        <div id="add-tag-form">
+                            <p id="add-tag-error">Please fill in all required fields.</p>
+
+                            <input type="text" id="add-tag-name" placeholder="Tag name...">
+                            
+                            <input type="color" id="add-tag-color" value="#000000">
+
+                            <button type="button" id="add-tag-confirm-btn"><span>Add</span></button>
+                        </div>
                     </fieldset>
 
                     <label for="note-attachment">Attachment</label>
