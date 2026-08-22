@@ -121,7 +121,7 @@ function renderNotes(notesToRender) {
 
             const checkedCount = itemsMarcados.length;
 
-            const checklistText = checkedCount + "/" + note.checklist.length + " concluídos";
+            const checklistText = checkedCount + "/" + note.checklist.length + " completed";
 
             const checklistProgress = document.createElement('p');
             checklistProgress.classList.add('checklist-progress');
