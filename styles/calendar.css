@@ -127,6 +127,68 @@
     background-color: var(--color-secondary);
 }
 
+/* Day Events Modal */
+#day-events-modal {
+    margin: auto;
+    width: 90%;
+    max-width: 400px;
+    padding: 2rem;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--color-bg);
+}
+
+#day-events-modal::backdrop {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+#day-events-title {
+    text-align: center;
+    color: var(--color-primary);
+}
+
+#day-events-list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--color-border);
+    list-style: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#day-events-list li:hover {
+    background-color: var(--color-secondary);
+    border-radius: 8px;
+}
+
+#day-events-close-btn {
+    display: block;
+    margin-top: 1rem;
+    margin-left: auto;
+    padding: 0.2rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background-color: transparent;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#day-events-close-btn:hover {
+    background-color: var(--color-secondary);
+    color: var(--color-text-secondary);
+}
+
+#day-events-new-event-btn {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--color-accent);
+    border-radius: 8px;
+    background-color: transparent;
+    color: var(--color-accent);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
 #calendar nav {
     display: flex;
     align-items: center;

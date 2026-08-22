@@ -13,6 +13,11 @@ const trashEventsBtn = document.getElementById('trash-events-btn');
 const trashEventsModal = document.getElementById('trash-events-modal');
 const trashEventsList = document.getElementById('trash-events-list');
 const closeTrashEventsBtn = document.getElementById('close-trash-events-btn');
+const dayEventsModal = document.getElementById('day-events-modal');
+const dayEventsTitle = document.getElementById('day-events-title');
+const dayEventsList = document.getElementById('day-events-list');
+const dayEventsNewEventBtn = document.getElementById('day-events-new-event-btn');
+const dayEventsCloseBtn = document.getElementById('day-events-close-btn');
 
 // Data/state variables
 const today = new Date();
@@ -55,32 +60,34 @@ function renderCalendarDays() {
 
         cell.dataset.day = day;
 
-        const eventIndex = events.findIndex(function(event) {
+        const dayEvents = events.filter(function(event) {
             return event.day === day && event.month === currentMonth && event.year === currentYear;
         });
 
-        if (events[eventIndex]) {
+        if (dayEvents.length > 0) {
             cell.classList.add('has-event');
 
             const eventTitle = document.createElement('div');
             eventTitle.classList.add('event-label');
-            eventTitle.textContent = events[eventIndex].title;
+            eventTitle.textContent = dayEvents.length + " eventos";
             cell.appendChild(eventTitle);
         }
 
         cell.addEventListener('click', function() {
             selectedDay = day;
 
-            if (eventIndex !== -1) {
-                openEditEventModal(events[eventIndex]);
+            if (dayEvents.length > 0) {
+                dayEventsTitle.textContent = monthNames[currentMonth] + " " + day;
+                renderDayEvents(dayEvents);
+                dayEventsModal.showModal();
             } else {
                 eventBeingEdited = null;
                 renderAttachmentsPreview([], "attachment-preview");
                 document.getElementById("event-modal-title").textContent = "Add Event";
+            
+                eventError.style.display = 'none';
+                eventModal.showModal();
             }
-
-            eventError.style.display = 'none';
-            eventModal.showModal();
         });
 
         row.appendChild(cell);
@@ -96,6 +103,21 @@ function renderCalendarDays() {
     if (row.children.length > 0) {
         calendarGrid.appendChild(row);
     }
+}
+
+function renderDayEvents(dayEventsArray) {
+    dayEventsList.innerHTML = '';
+
+    dayEventsArray.forEach(function(event) {
+        const dayEventsItem = document.createElement('li');
+        dayEventsItem.textContent = event.time + " - " + event.title;
+        dayEventsList.appendChild(dayEventsItem);
+
+        dayEventsItem.addEventListener('click', function() {
+            dayEventsModal.close();
+            openEditEventModal(event);
+        });
+    });
 }
 
 function saveEvents() {
@@ -294,4 +316,16 @@ trashEventsBtn.addEventListener('click', function() {
 
 closeTrashEventsBtn.addEventListener('click', function() {
     trashEventsModal.close();
+});
+
+dayEventsCloseBtn.addEventListener('click', function() {
+    dayEventsModal.close();
+});
+
+dayEventsNewEventBtn.addEventListener('click', function() {
+    dayEventsModal.close();
+    eventBeingEdited = null;
+    renderAttachmentsPreview([], "attachment-preview");
+    document.getElementById("event-modal-title").textContent = "Add Event";
+    eventModal.showModal();
 });

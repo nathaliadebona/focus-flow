@@ -85,7 +85,6 @@
 #dashboard-list li:hover {
     background-color: var(--color-secondary);
     border-radius: 8px;
-    cursor: pointer;
 }
 
 #close-dashboard-modal-btn {
